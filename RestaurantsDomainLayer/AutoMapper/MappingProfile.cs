@@ -12,7 +12,8 @@ namespace RestaurantsDomainLayer.AutoMapper
         public MappingProfile()
         {
             this.CreateMap<Restaurant, RestaurantDto>();
-            this.CreateMap<RestaurantCreationDto, Restaurant>();    
+            this.CreateMap<RestaurantCreationDto, Restaurant>().ReverseMap();
+            this.CreateMap<Address, AddressCreationDto>().ReverseMap();
         }
     }
 }

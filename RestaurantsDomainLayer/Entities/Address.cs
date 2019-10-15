@@ -22,9 +22,9 @@ namespace RestaurantsDomainLayer.Model
         [Required, MaxLength(100)]
         public string Country { get; set; }
 
-        public Guid RestaurantId { get; set; }
+        public Guid RestaurantID { get; set; }
 
-        [ForeignKey("RestaurantId")]
+        [ForeignKey("RestaurantID")]
         public Restaurant Restaurant { get; set; }
     }
 }

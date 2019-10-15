@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using RestaurantsDataAccessLayer.DbContext;
 using RestaurantsDataAccessLayer.Interfaces;
 using RestaurantsDataAccessLayer.Repositories;
+using RestaurantsDomainLayer.AutoMapper;
 
 namespace RestaurantsApi
 {
@@ -25,6 +27,13 @@ namespace RestaurantsApi
             services.AddDbContext<RestaurantsDbContext>(options => options.UseSqlServer(
                 Configuration.GetConnectionString("RestaurantsApi")));
             services.AddTransient<IRestaurantRepository, RestaurantsRepositoryDB>();
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }

@@ -17,6 +17,6 @@ namespace RestaurantsDomainLayer.Entities.Models
 
         public double Rating { get; set; }
 
-        public virtual Address Location { get; set; }
+        public virtual AddressCreationDto Location { get; set; }
     }
 }

@@ -64,16 +64,25 @@ namespace RestaurantsApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Restaurant>> AddRestaurantAsync(RestaurantCreationDto restaurantCreationDto)
         {
-            if (restaurantCreationDto == null)
+            try
             {
-                return BadRequest();
-            }
-            var restaurant = _mapper.Map<Restaurant>(restaurantCreationDto);
-            _restaurantRepository.AddRestaurantAsync(restaurant);
-            await _restaurantRepository.Save();
-            await _restaurantRepository.GetRestaurantAsync(restaurant.ID);
+                if (restaurantCreationDto == null)
+                {
+                    return BadRequest();
+                }
 
-            return CreatedAtRoute("GetRestaurant", new {id = restaurant.ID}, restaurant);
+                var restaurant = _mapper.Map<Restaurant>(restaurantCreationDto);
+                _restaurantRepository.AddRestaurantAsync(restaurant);
+                await _restaurantRepository.Save();
+                var restaurantSaved = await _restaurantRepository.GetRestaurantAsync(restaurant.ID);
+                var restaurantToReturn = _mapper.Map<RestaurantDto>(restaurantSaved);
+                return CreatedAtRoute("GetRestaurant", new {id = restaurant.ID}, restaurantToReturn);
+            }
+            catch (Exception e)
+            {
+                return this.StatusCode(500, "Something went wrong try again");
+            }
+           
         }
     }
 }
