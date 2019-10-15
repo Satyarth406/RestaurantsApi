@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using AuthorizationAndAuthorizationLibrary.Model;
+using RestaurantsDomainLayer.Model;
 
 namespace RestaurantsDataAccessLayer.Interfaces
 {
@@ -10,8 +10,10 @@ namespace RestaurantsDataAccessLayer.Interfaces
     {
         Task<List<Restaurant>> GetRestaurantsAsync();
         Task<Restaurant> GetRestaurantAsync(Guid restaurantId);
-        Task<Restaurant> DeleteRestaurantAsync(Guid restaurantId);
-        Task<Restaurant> AddRestaurantAsync(Restaurant restaurant);
+        void DeleteRestaurantAsync(Guid restaurantId);
+        void AddRestaurantAsync(Restaurant restaurant);
         Task<Restaurant> EditRestaurantAsync(Restaurant restaurant);
+        Task<bool> Save();
+
     }
 }
