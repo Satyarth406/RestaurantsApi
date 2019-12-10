@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -26,7 +27,13 @@ namespace RestaurantsApi
         {
             services.AddDbContext<RestaurantsDbContext>(options => options.UseSqlServer(
                 Configuration.GetConnectionString("RestaurantsApi")));
+            
             services.AddTransient<IRestaurantRepository, RestaurantsRepositoryDB>();
+
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<RestaurantsDbContext>()
+                .AddDefaultTokenProviders() ;
+            
             var mappingConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new MappingProfile());
@@ -50,7 +57,7 @@ namespace RestaurantsApi
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
+            //app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc();
         }
