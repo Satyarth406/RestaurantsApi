@@ -31,9 +31,8 @@ namespace RestaurantsDataAccessLayer.Repositories
             return restaurant;
         }
 
-        public async void DeleteRestaurantAsync(Guid restaurantId)
+        public void DeleteRestaurantAsync(Restaurant getRestaurant)
         {
-            var getRestaurant = await _restaurantsDbContext.Restaurants.FindAsync(restaurantId);
             _restaurantsDbContext.Restaurants.Remove(getRestaurant);
         }
 
@@ -42,24 +41,9 @@ namespace RestaurantsDataAccessLayer.Repositories
             await _restaurantsDbContext.Restaurants.AddAsync(restaurant);
         }
 
-        public async Task<Restaurant> EditRestaurantAsync(Restaurant restaurant)
+        public async void EditRestaurantAsync(Restaurant restaurant)
         {
-            var getRestaurant = await _restaurantsDbContext.Restaurants.FindAsync(restaurant.ID);
-            
-            if(getRestaurant != null)
-            {
-                getRestaurant = restaurant;
-
-                _restaurantsDbContext.Restaurants.Update(getRestaurant);
-
-                _restaurantsDbContext.SaveChangesAsync();
-
-                return getRestaurant;
-            }
-            else
-            {
-                return getRestaurant;
-            }
+           
         }
 
         public async Task<bool> Save()
