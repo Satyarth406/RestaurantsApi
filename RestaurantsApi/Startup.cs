@@ -32,15 +32,19 @@ namespace RestaurantsApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
             services.AddDbContext<RestaurantsDbContext>(options => options.UseSqlServer(
                 Configuration.GetConnectionString("RestaurantsApi")));
             
+
             services.AddTransient<IRestaurantRepository, RestaurantsRepositoryDb>();
             services.AddTransient<IFoodItemsRepository, FoodItemsRepository>();
+
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<RestaurantsDbContext>()
                 .AddDefaultTokenProviders() ;
+
 
             services.Configure<ApiBehaviorOptions>(options =>
             {
@@ -101,7 +105,7 @@ namespace RestaurantsApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            
+            loggerFactory.AddConsole();
             if (env.IsDevelopment())
             {
                 app.UseExceptionHandler("/error-local-development");
