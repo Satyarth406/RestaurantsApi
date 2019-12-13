@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RestaurantsDataAccessLayer.DbContext;
 
 namespace RestaurantsDataAccessLayer.Migrations
 {
     [DbContext(typeof(RestaurantsDbContext))]
-    partial class RestaurantsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191213112527_initial")]
+    partial class initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,6 +63,62 @@ namespace RestaurantsDataAccessLayer.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetRoleClaims");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AccessFailedCount");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken();
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired();
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256);
+
+                    b.Property<bool>("EmailConfirmed");
+
+                    b.Property<bool>("LockoutEnabled");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("PasswordHash");
+
+                    b.Property<string>("PhoneNumber");
+
+                    b.Property<bool>("PhoneNumberConfirmed");
+
+                    b.Property<string>("SecurityStamp");
+
+                    b.Property<bool>("TwoFactorEnabled");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -142,6 +200,9 @@ namespace RestaurantsDataAccessLayer.Migrations
                         .IsRequired()
                         .HasMaxLength(100);
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired();
+
                     b.Property<string>("Landmark");
 
                     b.Property<string>("Line1")
@@ -157,62 +218,8 @@ namespace RestaurantsDataAccessLayer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Addresses");
-                });
 
-            modelBuilder.Entity("RestaurantsDomainLayer.Entities.ApplicationUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("AccessFailedCount");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken();
-
-                    b.Property<DateTime>("DateOfBirth");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256);
-
-                    b.Property<bool>("EmailConfirmed");
-
-                    b.Property<bool>("LockoutEnabled");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd");
-
-                    b.Property<string>("Name")
-                        .IsRequired();
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("PasswordHash");
-
-                    b.Property<string>("PhoneNumber");
-
-                    b.Property<bool>("PhoneNumberConfirmed");
-
-                    b.Property<string>("SecurityStamp");
-
-                    b.Property<bool>("TwoFactorEnabled");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.ToTable("AspNetUsers");
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Address");
                 });
 
             modelBuilder.Entity("RestaurantsDomainLayer.Entities.FoodItem", b =>
@@ -243,13 +250,12 @@ namespace RestaurantsDataAccessLayer.Migrations
 
                     b.Property<double>("AverageCost");
 
-                    b.Property<Guid>("LocationId");
-
                     b.Property<string>("Name")
                         .HasMaxLength(100);
 
-                    b.Property<string>("OwnerId")
-                        .IsRequired();
+                    b.Property<Guid>("OwnerId");
+
+                    b.Property<string>("OwnerId1");
 
                     b.Property<double>("Rating");
 
@@ -257,11 +263,55 @@ namespace RestaurantsDataAccessLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LocationId");
-
-                    b.HasIndex("OwnerId");
+                    b.HasIndex("OwnerId1");
 
                     b.ToTable("Restaurants");
+                });
+
+            modelBuilder.Entity("RestaurantsDomainLayer.Entities.ApplicationUser", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.Property<DateTime>("DateOfBirth");
+
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.HasDiscriminator().HasValue("ApplicationUser");
+                });
+
+            modelBuilder.Entity("RestaurantsDomainLayer.Entities.RestaurantAddress", b =>
+                {
+                    b.HasBaseType("RestaurantsDomainLayer.Entities.Address");
+
+                    b.Property<Guid>("RestaurantId");
+
+                    b.Property<Guid?>("RestaurantId1");
+
+                    b.HasIndex("RestaurantId")
+                        .IsUnique()
+                        .HasFilter("[RestaurantId] IS NOT NULL");
+
+                    b.HasIndex("RestaurantId1")
+                        .IsUnique()
+                        .HasFilter("[RestaurantId1] IS NOT NULL");
+
+                    b.HasDiscriminator().HasValue("RestaurantAddress");
+                });
+
+            modelBuilder.Entity("RestaurantsDomainLayer.Entities.UserAddress", b =>
+                {
+                    b.HasBaseType("RestaurantsDomainLayer.Entities.Address");
+
+                    b.Property<string>("ApplicationUserId");
+
+                    b.Property<string>("UserId");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("UserId");
+
+                    b.HasDiscriminator().HasValue("UserAddress");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -274,7 +324,7 @@ namespace RestaurantsDataAccessLayer.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("RestaurantsDomainLayer.Entities.ApplicationUser")
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -282,7 +332,7 @@ namespace RestaurantsDataAccessLayer.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("RestaurantsDomainLayer.Entities.ApplicationUser")
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -295,7 +345,7 @@ namespace RestaurantsDataAccessLayer.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("RestaurantsDomainLayer.Entities.ApplicationUser")
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -303,7 +353,7 @@ namespace RestaurantsDataAccessLayer.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("RestaurantsDomainLayer.Entities.ApplicationUser")
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -319,15 +369,34 @@ namespace RestaurantsDataAccessLayer.Migrations
 
             modelBuilder.Entity("RestaurantsDomainLayer.Entities.Restaurant", b =>
                 {
-                    b.HasOne("RestaurantsDomainLayer.Entities.Address", "Location")
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Owner")
                         .WithMany()
-                        .HasForeignKey("LocationId")
+                        .HasForeignKey("OwnerId1");
+                });
+
+            modelBuilder.Entity("RestaurantsDomainLayer.Entities.RestaurantAddress", b =>
+                {
+                    b.HasOne("RestaurantsDomainLayer.Entities.Restaurant", "Restaurant")
+                        .WithOne("Location")
+                        .HasForeignKey("RestaurantsDomainLayer.Entities.RestaurantAddress", "RestaurantId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("RestaurantsDomainLayer.Entities.ApplicationUser", "Owner")
+                    b.HasOne("RestaurantsDomainLayer.Entities.Restaurant")
+                        .WithOne()
+                        .HasForeignKey("RestaurantsDomainLayer.Entities.RestaurantAddress", "RestaurantId1")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("RestaurantsDomainLayer.Entities.UserAddress", b =>
+                {
+                    b.HasOne("RestaurantsDomainLayer.Entities.ApplicationUser")
                         .WithMany()
-                        .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("RestaurantsDomainLayer.Entities.ApplicationUser", "User")
+                        .WithMany("Addresses")
+                        .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618
         }

@@ -15,6 +15,8 @@ using RestaurantsDomainLayer.AutoMapper;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using Microsoft.Extensions.Logging;
+using RestaurantsDomainLayer.Entities;
 
 namespace RestaurantsApi
 {
@@ -36,7 +38,7 @@ namespace RestaurantsApi
             services.AddTransient<IRestaurantRepository, RestaurantsRepositoryDb>();
             services.AddTransient<IFoodItemsRepository, FoodItemsRepository>();
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<RestaurantsDbContext>()
                 .AddDefaultTokenProviders() ;
 
@@ -93,11 +95,13 @@ namespace RestaurantsApi
             services.AddSingleton(mapper);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            
             if (env.IsDevelopment())
             {
                 app.UseExceptionHandler("/error-local-development");

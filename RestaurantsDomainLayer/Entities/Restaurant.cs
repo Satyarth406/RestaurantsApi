@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
 
 namespace RestaurantsDomainLayer.Entities
 {
@@ -17,14 +19,23 @@ namespace RestaurantsDomainLayer.Entities
 
         [MaxLength(100)]
         public string Name { get; set; }
+        
         public FoodType Type { get; set; }
-        [MinLength(1)]
-        public int AverageCost { get; set; }
-        [MaxLength(150)]
-        public int DeliveryTime { get; set; }
+
+        [Range(0.0,Double.MaxValue)]
+        public double AverageCost { get; set; }
+
         [Range(1,5)]
         public double Rating { get; set; }
+
+        [Required]
+        public string OwnerId { get; set; }
+
+        [ForeignKey("OwnerId")]
+        public ApplicationUser Owner { get; set; }
         public List<FoodItem> FoodItems { get; set; }
+        
+        [Required]
         public Address Location { get; set; }
 
     }

@@ -9,7 +9,7 @@ namespace RestaurantsDataAccessLayer.Repositories
 {
     public class FoodItemsRepository:IFoodItemsRepository
     {
-        public Task<List<FoodItem>> GetFoodItemsForRestaurantAsync(Guid restaurantI)
+        public Task<List<FoodItem>> GetFoodItemsForRestaurantAsync(Guid restaurantId)
         {
             throw new NotImplementedException();
         }
