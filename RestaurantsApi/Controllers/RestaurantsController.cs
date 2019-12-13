@@ -75,12 +75,10 @@ namespace RestaurantsApi.Controllers
             }
 
             var restaurantToReturn = _mapper.Map<RestaurantDto>(restaurant);
-            return CreatedAtRoute("GetRestaurant", new { id = restaurant.ID }, restaurantToReturn);
+            return CreatedAtRoute("GetRestaurant", new { id = restaurant.Id}, restaurantToReturn);
         }
 
         
-        }
-
         /// <summary>
         /// Delete restaurant with the given id in the database
         /// </summary>
@@ -99,6 +97,7 @@ namespace RestaurantsApi.Controllers
             _restaurantRepository.DeleteRestaurantAsync(restaurant);
             return NoContent();
         }
+
 
         /// <summary>
         /// Update restaurant with the given id in the database
@@ -126,7 +125,7 @@ namespace RestaurantsApi.Controllers
             _restaurantRepository.AddRestaurantAsync(restaurantSaved);
 
             await _restaurantRepository.Save();
-            return CreatedAtRoute("GetRestaurant", new { id = restaurantSaved.ID }, _mapper.Map<RestaurantDto>(restaurantSaved));
+            return CreatedAtRoute("GetRestaurant", new { id = restaurantSaved.Id }, _mapper.Map<RestaurantDto>(restaurantSaved));
         }
     }
 }
