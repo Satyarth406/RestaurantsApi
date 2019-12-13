@@ -18,12 +18,12 @@ namespace RestaurantsApi.Controllers
         private readonly IRestaurantRepository _restaurantRepository;
         private readonly IMapper _mapper;
 
-        public RestaurantsController(IRestaurantRepository restaurantRepository,IMapper mapper)
+        public RestaurantsController(IRestaurantRepository restaurantRepository, IMapper mapper)
         {
             _restaurantRepository = restaurantRepository;
             _mapper = mapper;
         }
-        
+
         /// <summary>
         /// Get all the restaurants in the database
         /// </summary>
@@ -44,7 +44,7 @@ namespace RestaurantsApi.Controllers
         /// Get restaurant with the given id in the database
         /// </summary>
         /// <returns></returns>
-        [HttpGet("{id}",Name = "GetRestaurant")]
+        [HttpGet("{id}", Name = "GetRestaurant")]
         public async Task<ActionResult<Restaurant>> GetRestaurantAsync(Guid id)
         {
             var restaurant = await _restaurantRepository.GetRestaurantAsync(id);
@@ -76,13 +76,46 @@ namespace RestaurantsApi.Controllers
                 await _restaurantRepository.Save();
                 var restaurantSaved = await _restaurantRepository.GetRestaurantAsync(restaurant.ID);
                 var restaurantToReturn = _mapper.Map<RestaurantDto>(restaurantSaved);
-                return CreatedAtRoute("GetRestaurant", new {id = restaurant.ID}, restaurantToReturn);
+                return CreatedAtRoute("GetRestaurant", new { id = restaurant.ID }, restaurantToReturn);
             }
             catch (Exception e)
             {
                 return this.StatusCode(500, "Something went wrong try again");
             }
-           
+        }
+
+        /// <summary>
+        /// Delete restaurant with the given id in the database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("{id}", Name = "DeleteRestaurent")]
+        public async Task<ActionResult<Restaurant>> DeleteRestaurantAsync(Guid id)
+        {
+            _restaurantRepository.DeleteRestaurantAsync(id);
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Update restaurant with the given id in the database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="restaurantCreationDto"></param>
+        /// <returns></returns>
+        [HttpPut]
+        public async Task<ActionResult<Restaurant>> UpdateRestaurantAsync(Guid id, RestaurantCreationDto restaurantCreationDto)
+        {
+            if (restaurantCreationDto == null)
+            {
+                return BadRequest();
+            }
+
+            var restaurantSaved = await _restaurantRepository.GetRestaurantAsync(id);
+            var restaurant = _mapper.Map<Restaurant>(restaurantCreationDto);
+            var restaurantToReturn = _mapper.Map<RestaurantDto>(restaurantSaved);
+            _restaurantRepository.EditRestaurantAsync(restaurant);
+            await _restaurantRepository.Save();
+            return CreatedAtRoute("GetRestaurant", new { id = restaurant.ID }, restaurantToReturn);
         }
     }
 }

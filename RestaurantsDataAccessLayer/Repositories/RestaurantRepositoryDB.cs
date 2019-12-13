@@ -42,9 +42,24 @@ namespace RestaurantsDataAccessLayer.Repositories
             await _restaurantsDbContext.Restaurants.AddAsync(restaurant);
         }
 
-        public Task<Restaurant> EditRestaurantAsync(Restaurant restaurant)
+        public async Task<Restaurant> EditRestaurantAsync(Restaurant restaurant)
         {
-            throw new NotImplementedException();
+            var getRestaurant = await _restaurantsDbContext.Restaurants.FindAsync(restaurant.ID);
+            
+            if(getRestaurant != null)
+            {
+                getRestaurant = restaurant;
+
+                _restaurantsDbContext.Restaurants.Update(getRestaurant);
+
+                _restaurantsDbContext.SaveChangesAsync();
+
+                return getRestaurant;
+            }
+            else
+            {
+                return getRestaurant;
+            }
         }
 
         public async Task<bool> Save()
