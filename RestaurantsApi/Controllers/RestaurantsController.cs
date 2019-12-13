@@ -62,14 +62,70 @@ namespace RestaurantsApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Restaurant>> AddRestaurantAsync(RestaurantCreationDto restaurantCreationDto)
         {
+            if (restaurantCreationDto == null)
+            {
+                return BadRequest();
+            }
+
             var restaurant = _mapper.Map<Restaurant>(restaurantCreationDto);
             _restaurantRepository.AddRestaurantAsync(restaurant);
             if (await _restaurantRepository.Save())
             {
                 throw new Exception("Creating a Restaurant failed to save. Please try again later");
             }
+
             var restaurantToReturn = _mapper.Map<RestaurantDto>(restaurant);
-            return CreatedAtRoute("GetRestaurant", new { id = restaurant.Id }, restaurantToReturn);
+            return CreatedAtRoute("GetRestaurant", new { id = restaurant.Id}, restaurantToReturn);
+        }
+
+        
+        /// <summary>
+        /// Delete restaurant with the given id in the database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("{id}", Name = "DeleteRestaurent")]
+        public async Task<ActionResult<Restaurant>> DeleteRestaurantAsync(Guid id)
+        {
+            var restaurant = await _restaurantRepository.GetRestaurantAsync(id);
+
+            if(restaurant == null)
+            {
+                return NotFound($"The restaurant with the given {id} is not present");
+            }
+
+            _restaurantRepository.DeleteRestaurantAsync(restaurant);
+            return NoContent();
+        }
+
+
+        /// <summary>
+        /// Update restaurant with the given id in the database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="restaurantCreationDto"></param>
+        /// <returns></returns>
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Restaurant>> UpdateRestaurantAsync(Guid id, RestaurantCreationDto restaurantCreationDto)
+        {
+            if (restaurantCreationDto == null)
+            {
+                return BadRequest();
+            }
+
+            var restaurantSaved = await _restaurantRepository.GetRestaurantAsync(id);
+
+            if(restaurantSaved == null)
+            {
+                return NotFound($"The restaurant with the given {id} is not present");
+            }
+
+            _mapper.Map(restaurantCreationDto, restaurantSaved);
+            _restaurantRepository.EditRestaurantAsync(restaurantSaved);
+            _restaurantRepository.AddRestaurantAsync(restaurantSaved);
+
+            await _restaurantRepository.Save();
+            return CreatedAtRoute("GetRestaurant", new { id = restaurantSaved.Id }, _mapper.Map<RestaurantDto>(restaurantSaved));
         }
     }
 }

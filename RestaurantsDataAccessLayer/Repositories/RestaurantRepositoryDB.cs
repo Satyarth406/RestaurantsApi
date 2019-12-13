@@ -29,9 +29,8 @@ namespace RestaurantsDataAccessLayer.Repositories
             return restaurant;
         }
 
-        public async void DeleteRestaurantAsync(Guid restaurantId)
+        public void DeleteRestaurantAsync(Restaurant getRestaurant)
         {
-            var getRestaurant = await _restaurantsDbContext.Restaurants.FindAsync(restaurantId);
             _restaurantsDbContext.Restaurants.Remove(getRestaurant);
         }
 
@@ -40,9 +39,9 @@ namespace RestaurantsDataAccessLayer.Repositories
             await _restaurantsDbContext.Restaurants.AddAsync(restaurant);
         }
 
-        public Task<Restaurant> EditRestaurantAsync(Restaurant restaurant)
+        public async void EditRestaurantAsync(Restaurant restaurant)
         {
-            throw new NotImplementedException();
+           
         }
 
         public async Task<bool> Save()

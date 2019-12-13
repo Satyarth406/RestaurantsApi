@@ -22,5 +22,16 @@ namespace RestaurantsApi.Controllers
             _foodItemsRepository = foodItemsRepository;
             _mapper = mapper;
         }
+
+        [HttpGet(Name = "AllFoodItems")]
+        public async Task<ActionResult<FoodItem>> GetFoodItemsForRestaurantAsync(Guid restaurantId)
+        {
+            var allFoodItems = await _foodItemsRepository.GetFoodItemsForRestaurantAsync(restaurantId);
+            if (allFoodItems == null)
+            {
+                return NotFound("The are no food Items in the Restaurant.");
+            }
+            return Ok(allFoodItems);
+        }
     }
 }
