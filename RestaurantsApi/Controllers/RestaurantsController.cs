@@ -95,6 +95,12 @@ namespace RestaurantsApi.Controllers
             }
 
             _restaurantRepository.DeleteRestaurantAsync(restaurant);
+
+            if (await _restaurantRepository.Save())
+            {
+                throw new Exception("Failed to delete restaurant. Please try again later");
+            }
+
             return NoContent();
         }
 
@@ -122,9 +128,12 @@ namespace RestaurantsApi.Controllers
 
             _mapper.Map(restaurantCreationDto, restaurantSaved);
             _restaurantRepository.EditRestaurantAsync(restaurantSaved);
-            _restaurantRepository.AddRestaurantAsync(restaurantSaved);
 
-            await _restaurantRepository.Save();
+            if (await _restaurantRepository.Save())
+            {
+                throw new Exception("Failed to update Restaurant. Please try again later");
+            }
+            
             return CreatedAtRoute("GetRestaurant", new { id = restaurantSaved.Id }, _mapper.Map<RestaurantDto>(restaurantSaved));
         }
     }
