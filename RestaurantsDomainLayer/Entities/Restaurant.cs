@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
-namespace RestaurantsDomainLayer.Model
+namespace RestaurantsDomainLayer.Entities
 {
     public class Restaurant
     {
@@ -14,7 +13,7 @@ namespace RestaurantsDomainLayer.Model
         }
 
         [Key]
-        public Guid ID { get; set; }
+        public Guid Id { get; set; }
 
         [MaxLength(100)]
         public string Name { get; set; }
@@ -25,8 +24,8 @@ namespace RestaurantsDomainLayer.Model
         public int DeliveryTime { get; set; }
         [Range(1,5)]
         public double Rating { get; set; }
-        public virtual List<FoodItem> FoodItems { get; set; }
-        public virtual Address Location { get; set; }
+        public List<FoodItem> FoodItems { get; set; }
+        public Address Location { get; set; }
 
     }
 }

@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RestaurantsDataAccessLayer.Interfaces;
+using RestaurantsDomainLayer.Entities;
 using RestaurantsDomainLayer.Entities.Models;
-using RestaurantsDomainLayer.Model;
+using System;
+using System.Threading.Tasks;
 
 namespace RestaurantsApi.Controllers
 {
@@ -20,12 +17,12 @@ namespace RestaurantsApi.Controllers
         private readonly IRestaurantRepository _restaurantRepository;
         private readonly IMapper _mapper;
 
-        public RestaurantsController(IRestaurantRepository restaurantRepository,IMapper mapper)
+        public RestaurantsController(IRestaurantRepository restaurantRepository, IMapper mapper)
         {
             _restaurantRepository = restaurantRepository;
             _mapper = mapper;
         }
-        
+
         /// <summary>
         /// Get all the restaurants in the database
         /// </summary>
@@ -46,7 +43,7 @@ namespace RestaurantsApi.Controllers
         /// Get restaurant with the given id in the database
         /// </summary>
         /// <returns></returns>
-        [HttpGet("{id}",Name = "GetRestaurant")]
+        [HttpGet("{id}", Name = "GetRestaurant")]
         public async Task<ActionResult<Restaurant>> GetRestaurantAsync(Guid id)
         {
             var restaurant = await _restaurantRepository.GetRestaurantAsync(id);
@@ -66,25 +63,14 @@ namespace RestaurantsApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Restaurant>> AddRestaurantAsync(RestaurantCreationDto restaurantCreationDto)
         {
-            try
+            var restaurant = _mapper.Map<Restaurant>(restaurantCreationDto);
+            _restaurantRepository.AddRestaurantAsync(restaurant);
+            if (await _restaurantRepository.Save())
             {
-                if (restaurantCreationDto == null)
-                {
-                    return BadRequest();
-                }
-
-                var restaurant = _mapper.Map<Restaurant>(restaurantCreationDto);
-                _restaurantRepository.AddRestaurantAsync(restaurant);
-                await _restaurantRepository.Save();
-                var restaurantSaved = await _restaurantRepository.GetRestaurantAsync(restaurant.ID);
-                var restaurantToReturn = _mapper.Map<RestaurantDto>(restaurantSaved);
-                return CreatedAtRoute("GetRestaurant", new {id = restaurant.ID}, restaurantToReturn);
+                throw new Exception("Creating a Restaurant failed to save. Please try again later");
             }
-            catch (Exception e)
-            {
-                return this.StatusCode(500, "Something went wrong try again");
-            }
-           
+            var restaurantToReturn = _mapper.Map<RestaurantDto>(restaurant);
+            return CreatedAtRoute("GetRestaurant", new { id = restaurant.Id }, restaurantToReturn);
         }
     }
 }

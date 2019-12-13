@@ -1,20 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using RestaurantsDataAccessLayer.DbContext;
 using RestaurantsDataAccessLayer.Interfaces;
-using RestaurantsDomainLayer.Model;
+using RestaurantsDomainLayer.Entities;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace RestaurantsDataAccessLayer.Repositories
 {
-    public class RestaurantsRepositoryDB : IRestaurantRepository
+    public class RestaurantsRepositoryDb : IRestaurantRepository
     {
         private readonly RestaurantsDbContext _restaurantsDbContext;
 
-        public RestaurantsRepositoryDB(RestaurantsDbContext restaurantsDbContext)
+        public RestaurantsRepositoryDb(RestaurantsDbContext restaurantsDbContext)
         {
             _restaurantsDbContext = restaurantsDbContext;
         }

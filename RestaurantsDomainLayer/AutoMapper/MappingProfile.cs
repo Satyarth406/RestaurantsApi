@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
+using RestaurantsDomainLayer.Entities;
 using RestaurantsDomainLayer.Entities.Models;
-using RestaurantsDomainLayer.Model;
 
 namespace RestaurantsDomainLayer.AutoMapper
 {
@@ -8,9 +8,9 @@ namespace RestaurantsDomainLayer.AutoMapper
     {
         public MappingProfile()
         {
-            this.CreateMap<Restaurant, RestaurantDto>();
-            this.CreateMap<RestaurantCreationDto, Restaurant>().ReverseMap();
-            this.CreateMap<Address, AddressCreationDto>().ReverseMap();
+            CreateMap<Restaurant, RestaurantDto>();
+            CreateMap<RestaurantCreationDto, Restaurant>().ReverseMap();
+            CreateMap<Address, AddressCreationDto>().ReverseMap();
         }
     }
 }

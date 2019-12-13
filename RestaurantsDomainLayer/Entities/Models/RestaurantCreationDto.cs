@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using RestaurantsDomainLayer.Model;
-
-namespace RestaurantsDomainLayer.Entities.Models
+﻿namespace RestaurantsDomainLayer.Entities.Models
 {
     public class RestaurantCreationDto
     {
