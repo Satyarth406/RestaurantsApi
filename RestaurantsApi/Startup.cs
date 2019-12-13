@@ -34,6 +34,7 @@ namespace RestaurantsApi
                 Configuration.GetConnectionString("RestaurantsApi")));
             
             services.AddTransient<IRestaurantRepository, RestaurantsRepositoryDb>();
+            services.AddTransient<IFoodItemsRepository, FoodItemsRepository>();
 
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<RestaurantsDbContext>()

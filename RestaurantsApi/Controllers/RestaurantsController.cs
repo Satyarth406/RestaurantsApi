@@ -11,7 +11,6 @@ namespace RestaurantsApi.Controllers
 {
     [Route("api/restaurants")]
     [ApiController]
-    [Authorize]
     public class RestaurantsController : ControllerBase
     {
         private readonly IRestaurantRepository _restaurantRepository;
