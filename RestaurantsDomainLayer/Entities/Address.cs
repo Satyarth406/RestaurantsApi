@@ -1,12 +1,13 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using RestaurantsDomainLayer.Entities.Models;
 
-namespace RestaurantsDomainLayer.Model
+namespace RestaurantsDomainLayer.Entities
 {
     public class Address
     {
-        public Guid ID { get; set; }
+        public Guid Id { get; set; }
         
         [Required,MaxLength(100)]
         public string Line1 { get; set; }
@@ -22,9 +23,9 @@ namespace RestaurantsDomainLayer.Model
         [Required, MaxLength(100)]
         public string Country { get; set; }
 
-        public Guid RestaurantID { get; set; }
+        public Guid RestaurantId { get; set; }
 
-        [ForeignKey("RestaurantID")]
+        [ForeignKey("RestaurantId")]
         public Restaurant Restaurant { get; set; }
     }
 }

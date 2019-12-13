@@ -1,13 +1,14 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using RestaurantsDomainLayer.Entities.Models;
 
-namespace RestaurantsDomainLayer.Model
+namespace RestaurantsDomainLayer.Entities
 {
     public class FoodItem
     {
         [Key]
-        public Guid ID{ get; set; }
+        public Guid Id{ get; set; }
 
         [MaxLength(100)]
         public string Name { get; set; }

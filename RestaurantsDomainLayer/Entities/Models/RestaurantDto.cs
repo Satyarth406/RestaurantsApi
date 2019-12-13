@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using RestaurantsDomainLayer.Model;
 
 namespace RestaurantsDomainLayer.Entities.Models
 {
     public class RestaurantDto
     {
-        public Guid ID { get; set; }
+        public Guid Id { get; set; }
 
         public string Name { get; set; }
 

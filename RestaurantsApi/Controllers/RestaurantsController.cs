@@ -1,20 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RestaurantsDataAccessLayer.Interfaces;
+using RestaurantsDomainLayer.Entities;
 using RestaurantsDomainLayer.Entities.Models;
-using RestaurantsDomainLayer.Model;
+using System;
+using System.Threading.Tasks;
 
 namespace RestaurantsApi.Controllers
 {
     [Route("api/restaurants")]
     [ApiController]
-    [Authorize]
     public class RestaurantsController : ControllerBase
     {
         private readonly IRestaurantRepository _restaurantRepository;
@@ -66,24 +62,23 @@ namespace RestaurantsApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Restaurant>> AddRestaurantAsync(RestaurantCreationDto restaurantCreationDto)
         {
-            try
+            if (restaurantCreationDto == null)
             {
-                if (restaurantCreationDto == null)
-                {
-                    return BadRequest();
-                }
-
-                var restaurant = _mapper.Map<Restaurant>(restaurantCreationDto);
-                _restaurantRepository.AddRestaurantAsync(restaurant);
-                await _restaurantRepository.Save();
-
-                var restaurantToReturn = _mapper.Map<RestaurantDto>(restaurant);
-                return CreatedAtRoute("GetRestaurant", new { id = restaurant.ID }, restaurantToReturn);
+                return BadRequest();
             }
-            catch (Exception e)
+
+            var restaurant = _mapper.Map<Restaurant>(restaurantCreationDto);
+            _restaurantRepository.AddRestaurantAsync(restaurant);
+            if (await _restaurantRepository.Save())
             {
-                return this.StatusCode(500, "Something went wrong try again");
+                throw new Exception("Creating a Restaurant failed to save. Please try again later");
             }
+
+            var restaurantToReturn = _mapper.Map<RestaurantDto>(restaurant);
+            return CreatedAtRoute("GetRestaurant", new { id = restaurant.ID }, restaurantToReturn);
+        }
+
+        
         }
 
         /// <summary>

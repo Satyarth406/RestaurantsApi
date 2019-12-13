@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RestaurantsDomainLayer.Model
+namespace RestaurantsDomainLayer.Entities
 {
     [Flags]
     public enum FoodType
