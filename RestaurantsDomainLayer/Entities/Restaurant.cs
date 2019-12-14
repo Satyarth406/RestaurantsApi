@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Identity;
 
 namespace RestaurantsDomainLayer.Entities
 {
+    /// <summary>
+    /// Resturant with Id, Name
+    /// </summary>
     public class Restaurant
     {
         public Restaurant()
@@ -33,6 +36,7 @@ namespace RestaurantsDomainLayer.Entities
 
         [ForeignKey("OwnerId")]
         public ApplicationUser Owner { get; set; }
+
         public List<FoodItem> FoodItems { get; set; }
         
         [Required]

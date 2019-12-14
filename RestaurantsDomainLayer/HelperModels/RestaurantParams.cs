@@ -7,8 +7,13 @@ namespace RestaurantsDomainLayer.HelperModels
     public class RestaurantParams
     {
         private int _pageSize;
+
+        public int Rating { get; set; }
+        
         public int PageNumber { get; set; } = 1;
+        
         private const int maxRestaurantPageSize = 25;
+
         public int PageSize
         {
             get { return _pageSize; }

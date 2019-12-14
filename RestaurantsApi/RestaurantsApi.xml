@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>RestaurantsApi</name>
+    </assembly>
+    <members>
+        <member name="M:RestaurantsApi.Controllers.RestaurantsController.GetAllRestaurantsAsync(RestaurantsDomainLayer.HelperModels.RestaurantParams)">
+            <summary>
+            Get all the restaurants in the database
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:RestaurantsApi.Controllers.RestaurantsController.GetRestaurantAsync(System.Guid)">
+            <summary>
+            Get restaurant with the given id in the database
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:RestaurantsApi.Controllers.RestaurantsController.AddRestaurantAsync(RestaurantsDomainLayer.Entities.Models.RestaurantCreationDto)">
+            <summary>
+            Get all the restaurants in the database
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:RestaurantsApi.Controllers.RestaurantsController.DeleteRestaurantAsync(System.Guid)">
+            <summary>
+            Delete restaurant with the given id in the database
+            </summary>
+            <param name="id">The id of the restaurant to be deleted</param>
+            <returns>This will delete the Resturant</returns>
+        </member>
+        <member name="M:RestaurantsApi.Controllers.RestaurantsController.UpdateRestaurantAsync(System.Guid,RestaurantsDomainLayer.Entities.Models.RestaurantCreationDto)">
+            <summary>
+            Update restaurant with the given id in the database
+            </summary>
+            <param name="id"></param>
+            <param name="restaurantCreationDto"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

@@ -19,6 +19,7 @@ using Microsoft.Extensions.Logging;
 using RestaurantsDomainLayer.Entities;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.OpenApi.Models;
 
 namespace RestaurantsApi
 {
@@ -37,12 +38,12 @@ namespace RestaurantsApi
 
             services.AddDbContext<RestaurantsDbContext>(options => options.UseSqlServer(
                 Configuration.GetConnectionString("RestaurantsApi")));
-            
+
 
             services.AddTransient<IRestaurantRepository, RestaurantsRepositoryDb>();
             services.AddTransient<IFoodItemsRepository, FoodItemsRepository>();
 
-           
+
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddScoped<IUrlHelper, UrlHelper>(options =>
             {
@@ -52,7 +53,7 @@ namespace RestaurantsApi
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<RestaurantsDbContext>()
-                .AddDefaultTokenProviders() ;
+                .AddDefaultTokenProviders();
 
 
             services.Configure<ApiBehaviorOptions>(options =>
@@ -107,8 +108,18 @@ namespace RestaurantsApi
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
 
+            services.AddSwaggerGen(setup =>
+            {
+                setup.SwaggerDoc("RestaurantApiOpenSpecs",
+                    new OpenApiInfo()
+                    {
+                        Title = "Restaurant Api"
+                    });
+                setup.IncludeXmlComments(@"C:\dummy\RestaurantApplication\RestaurantsApi\RestaurantsApi.xml");
+            });
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -127,7 +138,13 @@ namespace RestaurantsApi
             }
             app.UseAuthentication();
             app.UseHttpsRedirection();
-            app.UseMvc();
+            app.UseSwagger();
+            app.UseSwaggerUI(setupActions =>
+            {
+                setupActions.SwaggerEndpoint("/swagger/RestaurantApiOpenSpecs/swagger.json",
+                    "SwaggerUiIDocs");
+            });
+                app.UseMvc();
         }
     }
 }

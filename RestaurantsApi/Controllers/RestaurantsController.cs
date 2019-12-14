@@ -7,10 +7,18 @@ using RestaurantsDomainLayer.Entities.Models;
 using RestaurantsDomainLayer.HelperModels;
 using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyModel.Resolution;
 
 namespace RestaurantsApi.Controllers
 {
     [Route("api/restaurants")]
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ApiController]
     public class RestaurantsController : ControllerBase
     {
@@ -30,9 +38,11 @@ namespace RestaurantsApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet(Name = "AllRestaurants")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<Restaurant>> GetAllRestaurantsAsync(RestaurantParams restaurantParams)
         {
             var allRestaurants = await _restaurantRepository.GetRestaurantsAsync(restaurantParams);
+            
             if (allRestaurants == null)
             {
                 return NotFound("The are no restaurants in the DB");
@@ -46,6 +56,7 @@ namespace RestaurantsApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("{id}", Name = "GetRestaurant")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<Restaurant>> GetRestaurantAsync(Guid id)
         {
             var restaurant = await _restaurantRepository.GetRestaurantAsync(id);
@@ -85,8 +96,8 @@ namespace RestaurantsApi.Controllers
         /// <summary>
         /// Delete restaurant with the given id in the database
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">The id of the restaurant to be deleted</param>
+        /// <returns>This will delete the Resturant</returns>
         [HttpDelete("{id}", Name = "DeleteRestaurent")]
         public async Task<ActionResult<Restaurant>> DeleteRestaurantAsync(Guid id)
         {

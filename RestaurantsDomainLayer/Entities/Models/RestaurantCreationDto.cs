@@ -3,8 +3,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace RestaurantsDomainLayer.Entities.Models
 {
+    /// <summary>
+    /// Dto to create the restaurant
+    /// </summary>
     public class RestaurantCreationDto
     {
+        /// <summary>
+        /// Name of the Restaurant
+        /// </summary>
         [MaxLength(100)]
         public string Name { get; set; }
 

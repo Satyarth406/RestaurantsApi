@@ -9,7 +9,7 @@ using System.Net;
 namespace RestaurantsApi.Controllers
 {
 
-    [ApiController]
+    
     public class ErrorController : ControllerBase
     {
         private readonly ILogger<ErrorController> _logger;
@@ -20,8 +20,7 @@ namespace RestaurantsApi.Controllers
         }
 
         [Route("/error-local-development")]
-        public IActionResult ErrorLocalDevelopment(
-        [FromServices] IHostingEnvironment webHostEnvironment)
+        public IActionResult ErrorLocalDevelopment([FromServices] IHostingEnvironment webHostEnvironment)
         {
             if (!webHostEnvironment.IsDevelopment())
             {

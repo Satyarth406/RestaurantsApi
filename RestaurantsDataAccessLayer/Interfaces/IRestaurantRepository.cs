@@ -8,7 +8,7 @@ namespace RestaurantsDataAccessLayer.Interfaces
 {
     public interface IRestaurantRepository
     {
-        Task<List<Restaurant>> GetRestaurantsAsync(RestaurantParams restaurantParams);
+        Task<PagedList<Restaurant>> GetRestaurantsAsync(RestaurantParams restaurantParams);
         Task<Restaurant> GetRestaurantAsync(Guid restaurantId);
         void DeleteRestaurantAsync(Restaurant getRestaurant);
         void AddRestaurantAsync(Restaurant restaurant);

@@ -5,6 +5,7 @@ using RestaurantsDomainLayer.Entities;
 using RestaurantsDomainLayer.HelperModels;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace RestaurantsDataAccessLayer.Repositories
@@ -19,9 +20,9 @@ namespace RestaurantsDataAccessLayer.Repositories
         }
 
 
-        public async Task<List<Restaurant>> GetRestaurantsAsync(RestaurantParams restaurantParams)
+        public async Task<PagedList<Restaurant>> GetRestaurantsAsync(RestaurantParams restaurantParams)
         {
-            return await _restaurantsDbContext.Restaurants.ToListAsync();
+            return await PagedList<Restaurant>.Create(_restaurantsDbContext.Restaurants,restaurantParams.PageNumber,restaurantParams.PageSize);
         }
 
         public async Task<Restaurant> GetRestaurantAsync(Guid restaurantId)
