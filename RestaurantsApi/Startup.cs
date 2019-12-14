@@ -17,6 +17,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.Extensions.Logging;
 using RestaurantsDomainLayer.Entities;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace RestaurantsApi
 {
@@ -40,6 +42,13 @@ namespace RestaurantsApi
             services.AddTransient<IRestaurantRepository, RestaurantsRepositoryDb>();
             services.AddTransient<IFoodItemsRepository, FoodItemsRepository>();
 
+           
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+            services.AddScoped<IUrlHelper, UrlHelper>(options =>
+            {
+                var actionContext = options.GetService<IActionContextAccessor>().ActionContext;
+                return new UrlHelper(actionContext);
+            });
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<RestaurantsDbContext>()

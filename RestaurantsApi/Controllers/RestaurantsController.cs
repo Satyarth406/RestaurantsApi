@@ -16,12 +16,13 @@ namespace RestaurantsApi.Controllers
     {
         private readonly IRestaurantRepository _restaurantRepository;
         private readonly IMapper _mapper;
-        
+        private readonly IUrlHelper _urlHelper;
 
-        public RestaurantsController(IRestaurantRepository restaurantRepository, IMapper mapper)
+        public RestaurantsController(IRestaurantRepository restaurantRepository, IMapper mapper, IUrlHelper urlHelper)
         {
             _restaurantRepository = restaurantRepository;
             _mapper = mapper;
+            _urlHelper = urlHelper;
         }
 
         /// <summary>
