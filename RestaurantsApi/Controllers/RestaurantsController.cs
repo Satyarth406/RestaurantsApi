@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using RestaurantsDataAccessLayer.Interfaces;
 using RestaurantsDomainLayer.Entities;
 using RestaurantsDomainLayer.Entities.Models;
+using RestaurantsDomainLayer.HelperModels;
 using System;
 using System.Threading.Tasks;
 
@@ -15,11 +16,13 @@ namespace RestaurantsApi.Controllers
     {
         private readonly IRestaurantRepository _restaurantRepository;
         private readonly IMapper _mapper;
+        private readonly IUrlHelper _urlHelper;
 
-        public RestaurantsController(IRestaurantRepository restaurantRepository, IMapper mapper)
+        public RestaurantsController(IRestaurantRepository restaurantRepository, IMapper mapper, IUrlHelper urlHelper)
         {
             _restaurantRepository = restaurantRepository;
             _mapper = mapper;
+            _urlHelper = urlHelper;
         }
 
         /// <summary>
@@ -27,9 +30,9 @@ namespace RestaurantsApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet(Name = "AllRestaurants")]
-        public async Task<ActionResult<Restaurant>> GetAllRestaurantsAsync()
+        public async Task<ActionResult<Restaurant>> GetAllRestaurantsAsync(RestaurantParams restaurantParams)
         {
-            var allRestaurants = await _restaurantRepository.GetRestaurantsAsync();
+            var allRestaurants = await _restaurantRepository.GetRestaurantsAsync(restaurantParams);
             if (allRestaurants == null)
             {
                 return NotFound("The are no restaurants in the DB");
@@ -75,10 +78,10 @@ namespace RestaurantsApi.Controllers
             }
 
             var restaurantToReturn = _mapper.Map<RestaurantDto>(restaurant);
-            return CreatedAtRoute("GetRestaurant", new { id = restaurant.Id}, restaurantToReturn);
+            return CreatedAtRoute("GetRestaurant", new { id = restaurant.Id }, restaurantToReturn);
         }
 
-        
+
         /// <summary>
         /// Delete restaurant with the given id in the database
         /// </summary>
@@ -89,12 +92,18 @@ namespace RestaurantsApi.Controllers
         {
             var restaurant = await _restaurantRepository.GetRestaurantAsync(id);
 
-            if(restaurant == null)
+            if (restaurant == null)
             {
                 return NotFound($"The restaurant with the given {id} is not present");
             }
 
             _restaurantRepository.DeleteRestaurantAsync(restaurant);
+
+            if (await _restaurantRepository.Save())
+            {
+                throw new Exception("Failed to delete restaurant. Please try again later");
+            }
+
             return NoContent();
         }
 
@@ -108,6 +117,7 @@ namespace RestaurantsApi.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<Restaurant>> UpdateRestaurantAsync(Guid id, RestaurantCreationDto restaurantCreationDto)
         {
+            ////Satyarth - see if this is really needed or not.
             if (restaurantCreationDto == null)
             {
                 return BadRequest();
@@ -115,17 +125,46 @@ namespace RestaurantsApi.Controllers
 
             var restaurantSaved = await _restaurantRepository.GetRestaurantAsync(id);
 
-            if(restaurantSaved == null)
+            if (restaurantSaved == null)
             {
                 return NotFound($"The restaurant with the given {id} is not present");
             }
 
             _mapper.Map(restaurantCreationDto, restaurantSaved);
             _restaurantRepository.EditRestaurantAsync(restaurantSaved);
-            _restaurantRepository.AddRestaurantAsync(restaurantSaved);
 
-            await _restaurantRepository.Save();
+            if (await _restaurantRepository.Save())
+            {
+                throw new Exception("Failed to update Restaurant. Please try again later");
+            }
+
             return CreatedAtRoute("GetRestaurant", new { id = restaurantSaved.Id }, _mapper.Map<RestaurantDto>(restaurantSaved));
+        }
+
+
+
+        [HttpPatch("{id}")]
+        public async Task<ActionResult<Restaurant>> PartiallyUpdateRestaurantAsync(Guid id, JsonPatchDocument<RestaurantCreationDto> restaurantPatchDoc)
+        {
+            var restaurantInDb = await _restaurantRepository.GetRestaurantAsync(id);
+
+            if (restaurantInDb == null)
+            {
+                return NotFound($"The restaurant with the given {id} is not present");
+            }
+            var restaurantCreationDto = _mapper.Map<RestaurantCreationDto>(restaurantInDb);
+
+            restaurantPatchDoc.ApplyTo(restaurantCreationDto);
+
+            _mapper.Map(restaurantCreationDto, restaurantInDb);
+            _restaurantRepository.EditRestaurantAsync(restaurantInDb);
+
+            if (await _restaurantRepository.Save())
+            {
+                throw new Exception("Failed to update Restaurant. Please try again later");
+            }
+
+            return NoContent();
         }
     }
 }

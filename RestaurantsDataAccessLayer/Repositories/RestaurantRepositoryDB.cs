@@ -2,6 +2,7 @@
 using RestaurantsDataAccessLayer.DbContext;
 using RestaurantsDataAccessLayer.Interfaces;
 using RestaurantsDomainLayer.Entities;
+using RestaurantsDomainLayer.HelperModels;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -18,7 +19,7 @@ namespace RestaurantsDataAccessLayer.Repositories
         }
 
 
-        public async Task<List<Restaurant>> GetRestaurantsAsync()
+        public async Task<List<Restaurant>> GetRestaurantsAsync(RestaurantParams restaurantParams)
         {
             return await _restaurantsDbContext.Restaurants.ToListAsync();
         }
