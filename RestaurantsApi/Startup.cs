@@ -122,9 +122,9 @@ namespace RestaurantsApi
                     {
                         Title = "Restaurant Api"
                     });
-                var xmlFileName = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml;";
+                var xmlFileName = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlFilePath = Path.Combine(AppContext.BaseDirectory, xmlFileName); 
-                setup.IncludeXmlComments(xmlFileName);
+                setup.IncludeXmlComments(xmlFilePath);
             });
 
             services.AddMvc();
