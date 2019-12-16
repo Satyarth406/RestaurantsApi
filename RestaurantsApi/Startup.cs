@@ -22,6 +22,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using RetaurantApiServices.Interfaces;
+using RetaurantApiServices.Services;
 
 namespace RestaurantsApi
 {
@@ -44,12 +46,12 @@ namespace RestaurantsApi
                     Configuration.GetConnectionString("RestaurantsApi"));
             });
 
-
             services.AddTransient<IRestaurantRepository, RestaurantsRepositoryDb>();
             services.AddTransient<IFoodItemsRepository, FoodItemsRepository>();
-
-
+            services.AddTransient<IFoodItemsService, FoodItemsService>();
+            services.AddTransient<IRestaurantService, RestaurantsService>();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+
             services.AddScoped<IUrlHelper, UrlHelper>(options =>
             {
                 var actionContext = options.GetService<IActionContextAccessor>().ActionContext;

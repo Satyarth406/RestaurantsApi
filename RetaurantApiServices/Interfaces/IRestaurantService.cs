@@ -1,17 +1,16 @@
 ﻿using RestaurantsDomainLayer.Entities;
 using RestaurantsDomainLayer.HelperModels;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace RestaurantsDataAccessLayer.Interfaces
+namespace RetaurantApiServices.Interfaces
 {
-    public interface IRestaurantRepository
+    public interface IRestaurantService
     {
         Task<PagedList<Restaurant>> GetRestaurantsAsync(RestaurantParams restaurantParams);
         Task<Restaurant> GetRestaurantAsync(Guid restaurantId);
         void DeleteRestaurantAsync(Restaurant getRestaurant);
-        Task AddRestaurantAsync(Restaurant restaurant);
+        void AddRestaurantAsync(Restaurant restaurant);
         void EditRestaurantAsync(Restaurant restaurant);
         Task<bool> SaveAsync();
 
