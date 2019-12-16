@@ -19,6 +19,8 @@ using RestaurantsDomainLayer.AutoMapper;
 using RestaurantsDomainLayer.Entities;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
+using System.Reflection;
 using System.Text;
 
 namespace RestaurantsApi
@@ -118,7 +120,9 @@ namespace RestaurantsApi
                     {
                         Title = "Restaurant Api"
                     });
-                setup.IncludeXmlComments(@"C:\dummy\RestaurantApplication\RestaurantsApi\RestaurantsApi.xml");
+                var xmlFileName = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml;";
+                var xmlFilePath = Path.Combine(AppContext.BaseDirectory, xmlFileName); 
+                setup.IncludeXmlComments(xmlFileName);
             });
 
             services.AddMvc();
