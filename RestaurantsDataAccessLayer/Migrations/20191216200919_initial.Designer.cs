@@ -10,14 +10,14 @@ using RestaurantsDataAccessLayer.DbContext;
 namespace RestaurantsDataAccessLayer.Migrations
 {
     [DbContext(typeof(RestaurantsDbContext))]
-    [Migration("20191213114223_address_improvement_1")]
-    partial class address_improvement_1
+    [Migration("20191216200919_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
+                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -168,6 +168,8 @@ namespace RestaurantsDataAccessLayer.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
+                    b.Property<Guid?>("AddressId");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
@@ -178,12 +180,17 @@ namespace RestaurantsDataAccessLayer.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(30);
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(20);
+
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
-
-                    b.Property<string>("Name")
-                        .IsRequired();
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256);
@@ -205,6 +212,8 @@ namespace RestaurantsDataAccessLayer.Migrations
                         .HasMaxLength(256);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AddressId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
@@ -245,7 +254,7 @@ namespace RestaurantsDataAccessLayer.Migrations
 
                     b.Property<double>("AverageCost");
 
-                    b.Property<Guid>("LocationId");
+                    b.Property<Guid?>("LocationId");
 
                     b.Property<string>("Name")
                         .HasMaxLength(100);
@@ -311,6 +320,13 @@ namespace RestaurantsDataAccessLayer.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("RestaurantsDomainLayer.Entities.ApplicationUser", b =>
+                {
+                    b.HasOne("RestaurantsDomainLayer.Entities.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId");
+                });
+
             modelBuilder.Entity("RestaurantsDomainLayer.Entities.FoodItem", b =>
                 {
                     b.HasOne("RestaurantsDomainLayer.Entities.Restaurant", "Restaurant")
@@ -323,8 +339,7 @@ namespace RestaurantsDataAccessLayer.Migrations
                 {
                     b.HasOne("RestaurantsDomainLayer.Entities.Address", "Location")
                         .WithMany()
-                        .HasForeignKey("LocationId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("LocationId");
 
                     b.HasOne("RestaurantsDomainLayer.Entities.ApplicationUser", "Owner")
                         .WithMany()

@@ -59,7 +59,17 @@ namespace RestaurantsApi.Controllers
                 UserName = model.Email,
                 Email = model.Email,
                 FirstName =  model.FirstName,
-                LastName = model.LastName
+                LastName = model.LastName,
+                DateOfBirth = model.DateOfBirth,
+                Address = new Address()
+                {
+                    Line1=model.Address.Line1,
+                    Line2 = model.Address.Line2,
+                    City= model.Address.City,
+                    State = model.Address.State,
+                    Country = model.Address.Country
+
+                }
             };
             var result = await _userManager.CreateAsync(user, model.Password);
 
@@ -122,7 +132,11 @@ namespace RestaurantsApi.Controllers
             public string LastName { get; set; }
 
             [Required]
-            public string DateOfBirth { get; set; }
+            public DateTime DateOfBirth { get; set; }
+
+            [Required]
+            public Address Address { get; set; }
+
         }
 
     }

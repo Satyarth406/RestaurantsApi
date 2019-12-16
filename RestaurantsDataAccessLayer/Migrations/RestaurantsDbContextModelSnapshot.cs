@@ -166,6 +166,8 @@ namespace RestaurantsDataAccessLayer.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
+                    b.Property<Guid?>("AddressId");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
@@ -209,6 +211,8 @@ namespace RestaurantsDataAccessLayer.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AddressId");
+
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
 
@@ -248,7 +252,7 @@ namespace RestaurantsDataAccessLayer.Migrations
 
                     b.Property<double>("AverageCost");
 
-                    b.Property<Guid>("LocationId");
+                    b.Property<Guid?>("LocationId");
 
                     b.Property<string>("Name")
                         .HasMaxLength(100);
@@ -314,6 +318,13 @@ namespace RestaurantsDataAccessLayer.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("RestaurantsDomainLayer.Entities.ApplicationUser", b =>
+                {
+                    b.HasOne("RestaurantsDomainLayer.Entities.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId");
+                });
+
             modelBuilder.Entity("RestaurantsDomainLayer.Entities.FoodItem", b =>
                 {
                     b.HasOne("RestaurantsDomainLayer.Entities.Restaurant", "Restaurant")
@@ -326,8 +337,7 @@ namespace RestaurantsDataAccessLayer.Migrations
                 {
                     b.HasOne("RestaurantsDomainLayer.Entities.Address", "Location")
                         .WithMany()
-                        .HasForeignKey("LocationId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("LocationId");
 
                     b.HasOne("RestaurantsDomainLayer.Entities.ApplicationUser", "Owner")
                         .WithMany()

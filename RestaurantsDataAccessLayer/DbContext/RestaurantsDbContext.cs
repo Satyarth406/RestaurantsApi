@@ -34,28 +34,7 @@ namespace RestaurantsDataAccessLayer.DbContext
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            builder.Entity<Restaurant>().HasData(new Restaurant()
-            {
-                Id = new Guid("2e17540f-f12f-4ba6-8263-7ca90ad9add5"),
-                Name = "Bangalore Restau 1",
-                AverageCost = 250,
-                OwnerId = "4eb7727c-8b24-4f7f-b16f-ba885cd9c925",
-                Rating = 4,
-                Type = FoodType.American
-            });
-
-            builder.Entity<Address>().HasData(new Address()
-            {
-                Id = new Guid("36010404-a2c5-4179-a4fb-a5bc28fdbdbf"),
-                Line1 = "unitech pearl yellukunte hosapalya",
-                Line2 = "main road hsr layout",
-                Landmark = "hsr",
-                City = "Bangalore",
-                State = "Karnataka",
-                Country = "India",
-            });
-
-          
+            
         }
 
         public DbSet<Restaurant> Restaurants { get; set; }
