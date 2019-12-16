@@ -24,7 +24,8 @@ namespace RestaurantsDataAccessLayer.DbContext
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseLoggerFactory(MyLoggerFactory);
+            optionsBuilder.UseLoggerFactory(MyLoggerFactory)
+                .EnableSensitiveDataLogging(true);
         }
 
         public DbSet<Restaurant> Restaurants { get; set; }
