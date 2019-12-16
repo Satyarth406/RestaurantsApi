@@ -1,26 +1,27 @@
-﻿using System;
+﻿using RestaurantsDomainLayer.Entities;
+using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using RestaurantsDataAccessLayer.DbContext;
 using RestaurantsDataAccessLayer.Interfaces;
-using RestaurantsDomainLayer.Entities;
-using Microsoft.EntityFrameworkCore;
+using RetaurantApiServices.Interfaces;
 
-namespace RestaurantsDataAccessLayer.Repositories
+namespace RetaurantApiServices.Services
 {
-    public class FoodItemsRepository : IFoodItemsRepository
+    public class FoodItemsService : IFoodItemsService
     {
-        private readonly RestaurantsDbContext _restaurantsDbContext;
+        private readonly IFoodItemsRepository _foodItemsRepository;
 
-        public FoodItemsRepository(RestaurantsDbContext restaurantsDbContext)
+        public FoodItemsService(IFoodItemsRepository foodItemsRepository)
         {
-            _restaurantsDbContext = restaurantsDbContext;
+            _foodItemsRepository = foodItemsRepository;
+            _foodItemsRepository = foodItemsRepository;
         }
         public async Task<List<FoodItem>> GetFoodItemsForRestaurantAsync(Guid restaurantId)
         {
-            var allFoodItems = await _restaurantsDbContext.FoodItems.Where(x => x.RestaurantId == restaurantId).ToListAsync();
+            var allFoodItems = await _foodItemsRepository.GetFoodItemsForRestaurantAsync(restaurantId);
             return allFoodItems;
         }
 
@@ -40,9 +41,9 @@ namespace RestaurantsDataAccessLayer.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<bool> SaveAsync()
+        public async Task<bool> Save()
         {
-            return await _restaurantsDbContext.SaveChangesAsync() > 0;
+            return await _foodItemsRepository.SaveAsync();
         }
 
         public Task<FoodItem> GetFoodItemForRestaurantAsync(Guid restaurantId, Guid foodItemId)

@@ -9,6 +9,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyModel.Resolution;
+using RetaurantApiServices.Interfaces;
 
 namespace RestaurantsApi.Controllers
 {
@@ -22,13 +23,16 @@ namespace RestaurantsApi.Controllers
     [ApiController]
     public class RestaurantsController : ControllerBase
     {
-        private readonly IRestaurantRepository _restaurantRepository;
+        //private readonly IRestaurantRepository _restaurantRepository;
+        private readonly IRestaurantService _restaurantService;
+
         private readonly IMapper _mapper;
         private readonly IUrlHelper _urlHelper;
 
-        public RestaurantsController(IRestaurantRepository restaurantRepository, IMapper mapper, IUrlHelper urlHelper)
+        public RestaurantsController(IRestaurantRepository restaurantRepository, IMapper mapper, IUrlHelper urlHelper, IRestaurantService restaurantService)
         {
-            _restaurantRepository = restaurantRepository;
+            _restaurantService = restaurantService;
+            //_restaurantRepository = restaurantRepository;
             _mapper = mapper;
             _urlHelper = urlHelper;
         }
@@ -41,7 +45,7 @@ namespace RestaurantsApi.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<Restaurant>> GetAllRestaurantsAsync([FromQuery]RestaurantParams restaurantParams)
         {
-            var allRestaurants = await _restaurantRepository.GetRestaurantsAsync(restaurantParams);
+            var allRestaurants = await _restaurantService.GetRestaurantsAsync(restaurantParams);
             
             if (allRestaurants == null)
             {
@@ -59,7 +63,7 @@ namespace RestaurantsApi.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<Restaurant>> GetRestaurantAsync(Guid id)
         {
-            var restaurant = await _restaurantRepository.GetRestaurantAsync(id);
+            var restaurant = await _restaurantService.GetRestaurantAsync(id);
             var restaurantDto = _mapper.Map<RestaurantDto>(restaurant);
             if (restaurantDto == null)
             {
@@ -82,8 +86,8 @@ namespace RestaurantsApi.Controllers
             }
 
             var restaurant = _mapper.Map<Restaurant>(restaurantCreationDto);
-            _restaurantRepository.AddRestaurantAsync(restaurant);
-            if (await _restaurantRepository.Save())
+            _restaurantService.AddRestaurantAsync(restaurant);
+            if (await _restaurantService.SaveAsync())
             {
                 throw new Exception("Creating a Restaurant failed to save. Please try again later");
             }
@@ -101,16 +105,16 @@ namespace RestaurantsApi.Controllers
         [HttpDelete("{id}", Name = "DeleteRestaurent")]
         public async Task<ActionResult<Restaurant>> DeleteRestaurantAsync(Guid id)
         {
-            var restaurant = await _restaurantRepository.GetRestaurantAsync(id);
+            var restaurant = await _restaurantService.GetRestaurantAsync(id);
 
             if (restaurant == null)
             {
                 return NotFound($"The restaurant with the given {id} is not present");
             }
 
-            _restaurantRepository.DeleteRestaurantAsync(restaurant);
+            _restaurantService.DeleteRestaurantAsync(restaurant);
 
-            if (await _restaurantRepository.Save())
+            if (await _restaurantService.SaveAsync())
             {
                 throw new Exception("Failed to delete restaurant. Please try again later");
             }
@@ -134,7 +138,7 @@ namespace RestaurantsApi.Controllers
                 return BadRequest();
             }
 
-            var restaurantSaved = await _restaurantRepository.GetRestaurantAsync(id);
+            var restaurantSaved = await _restaurantService.GetRestaurantAsync(id);
 
             if (restaurantSaved == null)
             {
@@ -142,9 +146,9 @@ namespace RestaurantsApi.Controllers
             }
 
             _mapper.Map(restaurantCreationDto, restaurantSaved);
-            _restaurantRepository.EditRestaurantAsync(restaurantSaved);
+            _restaurantService.EditRestaurantAsync(restaurantSaved);
 
-            if (await _restaurantRepository.Save())
+            if (await _restaurantService.SaveAsync())
             {
                 throw new Exception("Failed to update Restaurant. Please try again later");
             }
@@ -157,7 +161,7 @@ namespace RestaurantsApi.Controllers
         [HttpPatch("{id}")]
         public async Task<ActionResult<Restaurant>> PartiallyUpdateRestaurantAsync(Guid id, JsonPatchDocument<RestaurantCreationDto> restaurantPatchDoc)
         {
-            var restaurantInDb = await _restaurantRepository.GetRestaurantAsync(id);
+            var restaurantInDb = await _restaurantService.GetRestaurantAsync(id);
 
             if (restaurantInDb == null)
             {
@@ -168,9 +172,9 @@ namespace RestaurantsApi.Controllers
             restaurantPatchDoc.ApplyTo(restaurantCreationDto);
 
             _mapper.Map(restaurantCreationDto, restaurantInDb);
-            _restaurantRepository.EditRestaurantAsync(restaurantInDb);
+            _restaurantService.EditRestaurantAsync(restaurantInDb);
 
-            if (await _restaurantRepository.Save())
+            if (await _restaurantService.SaveAsync())
             {
                 throw new Exception("Failed to update Restaurant. Please try again later");
             }
