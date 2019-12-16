@@ -39,7 +39,7 @@ namespace RestaurantsApi.Controllers
         /// <returns></returns>
         [HttpGet(Name = "AllRestaurants")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<Restaurant>> GetAllRestaurantsAsync(RestaurantParams restaurantParams)
+        public async Task<ActionResult<Restaurant>> GetAllRestaurantsAsync([FromQuery]RestaurantParams restaurantParams)
         {
             var allRestaurants = await _restaurantRepository.GetRestaurantsAsync(restaurantParams);
             

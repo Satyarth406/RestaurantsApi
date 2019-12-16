@@ -4,22 +4,22 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using RestaurantsDataAccessLayer.DbContext;
 using RestaurantsDataAccessLayer.Interfaces;
 using RestaurantsDataAccessLayer.Repositories;
 using RestaurantsDomainLayer.AutoMapper;
+using RestaurantsDomainLayer.Entities;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-using Microsoft.Extensions.Logging;
-using RestaurantsDomainLayer.Entities;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.AspNetCore.Mvc.Routing;
-using Microsoft.OpenApi.Models;
 
 namespace RestaurantsApi
 {
@@ -36,8 +36,11 @@ namespace RestaurantsApi
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddDbContext<RestaurantsDbContext>(options => options.UseSqlServer(
-                Configuration.GetConnectionString("RestaurantsApi")));
+            services.AddDbContext<RestaurantsDbContext>(options =>
+            {
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("RestaurantsApi"));
+            });
 
 
             services.AddTransient<IRestaurantRepository, RestaurantsRepositoryDb>();
@@ -125,7 +128,6 @@ namespace RestaurantsApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddConsole();
             if (env.IsDevelopment())
             {
                 app.UseExceptionHandler("/error-local-development");
@@ -146,5 +148,6 @@ namespace RestaurantsApi
             });
                 app.UseMvc();
         }
+       
     }
 }
