@@ -121,7 +121,7 @@ namespace RestaurantsApi
                 setup.IncludeXmlComments(@"C:\dummy\RestaurantApplication\RestaurantsApi\RestaurantsApi.xml");
             });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc();
 
         }
 
