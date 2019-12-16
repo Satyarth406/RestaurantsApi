@@ -22,5 +22,6 @@ namespace RestaurantsDomainLayer.Entities
 
         [Required, MaxLength(100)]
         public string Country { get; set; }
+        
     }
 }

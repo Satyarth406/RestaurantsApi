@@ -57,7 +57,9 @@ namespace RestaurantsApi.Controllers
             var user = new ApplicationUser()
             {
                 UserName = model.Email,
-                Email = model.Email
+                Email = model.Email,
+                FirstName =  model.FirstName,
+                LastName = model.LastName
             };
             var result = await _userManager.CreateAsync(user, model.Password);
 
@@ -112,6 +114,15 @@ namespace RestaurantsApi.Controllers
             [Required]
             [StringLength(100, ErrorMessage = "PASSWORD_MIN_LENGTH", MinimumLength = 6)]
             public string Password { get; set; }
+
+            [Required]
+            public string FirstName { get; set; }
+
+            [Required]
+            public string LastName { get; set; }
+
+            [Required]
+            public string DateOfBirth { get; set; }
         }
 
     }

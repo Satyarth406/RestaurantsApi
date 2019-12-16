@@ -10,11 +10,17 @@ namespace RestaurantsDomainLayer.Entities
         {
             //Addresses = new List<Address>();
         }
+
         [Required]
         public DateTime DateOfBirth { get; set; }
-        
+
         [Required]
-        public string Name { get; set; }
+        [MaxLength(30)]
+        public string FirstName { get; set; }
+
+        [Required]
+        [MaxLength(20)]
+        public string LastName { get; set; }
 
         //public List<Address> Addresses { get; set; }
 

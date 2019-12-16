@@ -123,7 +123,7 @@ namespace RestaurantsApi
                         Title = "Restaurant Api"
                     });
                 var xmlFileName = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlFilePath = Path.Combine(AppContext.BaseDirectory, xmlFileName); 
+                var xmlFilePath = Path.Combine(AppContext.BaseDirectory, xmlFileName);
                 setup.IncludeXmlComments(xmlFilePath);
             });
 
@@ -151,9 +151,11 @@ namespace RestaurantsApi
             {
                 setupActions.SwaggerEndpoint("/swagger/RestaurantApiOpenSpecs/swagger.json",
                     "SwaggerUiIDocs");
+                setupActions.RoutePrefix = "";
             });
-                app.UseMvc();
+            
+            app.UseMvc();
         }
-       
+
     }
 }
