@@ -11,7 +11,7 @@ namespace RetaurantApiServices.Interfaces
         Task<Restaurant> GetRestaurantAsync(Guid restaurantId);
         void DeleteRestaurant(Restaurant getRestaurant);
         void AddRestaurant(Restaurant restaurant);
-        void EditRestaurantAsync(Restaurant restaurant);
+        void EditRestaurant(Restaurant restaurant);
         Task<bool> SaveAsync();
 
     }

@@ -9,10 +9,13 @@ using RestaurantsDataAccessLayer.Interfaces;
 
 namespace RestaurantsApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/restaurants/{restaurantId}/cart")]
     [ApiController]
     public class CartController : ControllerBase
     {
-        
+        public CartController()
+        {
+
+        }
     }
 }

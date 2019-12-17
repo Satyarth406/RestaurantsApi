@@ -109,6 +109,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\ICartService.cs" />
     <Compile Include="Interfaces\IFoodItemsService.cs" />
     <Compile Include="Interfaces\IRestaurantService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

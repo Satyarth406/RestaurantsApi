@@ -133,7 +133,7 @@ namespace RestaurantsApi.Controllers
             }
 
             _mapper.Map(restaurantCreationDto, restaurantSaved);
-            _restaurantService.EditRestaurantAsync(restaurantSaved);
+            _restaurantService.EditRestaurant(restaurantSaved);
 
             if (await _restaurantService.SaveAsync())
             {
@@ -165,7 +165,7 @@ namespace RestaurantsApi.Controllers
             restaurantPatchDoc.ApplyTo(restaurantCreationDto);
 
             _mapper.Map(restaurantCreationDto, restaurantInDb);
-            _restaurantService.EditRestaurantAsync(restaurantInDb);
+            _restaurantService.EditRestaurant(restaurantInDb);
 
             if (await _restaurantService.SaveAsync())
             {

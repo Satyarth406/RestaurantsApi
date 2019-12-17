@@ -38,7 +38,7 @@ namespace RestaurantsDataAccessLayer.Repositories
              _restaurantRepository.AddRestaurant(restaurant);
         }
 
-        public async void EditRestaurantAsync(Restaurant restaurant)
+        public void EditRestaurant(Restaurant restaurant)
         {
 
         }
