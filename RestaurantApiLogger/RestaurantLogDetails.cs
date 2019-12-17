@@ -11,7 +11,7 @@ namespace RestaurantApiLogger
             Timestamp = DateTime.Now;
             AdditionalData = new Dictionary<string, object>();
         }
-        public DateTime Timestamp{ get; private set; }
+        public DateTimeOffset Timestamp { get; private set; }
         public string Message { get; set; }
 
         public string Location { get; set; }

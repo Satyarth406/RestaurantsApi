@@ -132,7 +132,7 @@ namespace RestaurantsApi.Controllers
             public string LastName { get; set; }
 
             [Required]
-            public DateTime DateOfBirth { get; set; }
+            public DateTimeOffset DateOfBirth { get; set; }
 
             [Required]
             public Address Address { get; set; }

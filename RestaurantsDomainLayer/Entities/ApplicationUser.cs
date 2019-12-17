@@ -13,7 +13,7 @@ namespace RestaurantsDomainLayer.Entities
         }
 
         [Required]
-        public DateTime DateOfBirth { get; set; }
+        public DateTimeOffset DateOfBirth { get; set; }
 
         [Required]
         [MaxLength(30)]
