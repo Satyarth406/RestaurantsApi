@@ -31,14 +31,14 @@ namespace RestaurantsDataAccessLayer.Repositories
             return restaurant;
         }
 
-        public void DeleteRestaurantAsync(Restaurant getRestaurant)
+        public void DeleteRestaurant(Restaurant getRestaurant)
         {
             _restaurantsDbContext.Restaurants.Remove(getRestaurant);
         }
 
-        public async Task AddRestaurantAsync(Restaurant restaurant)
+        public void AddRestaurant(Restaurant restaurant)
         {
-            await _restaurantsDbContext.Restaurants.AddAsync(restaurant);
+             _restaurantsDbContext.Restaurants.Add(restaurant);
         }
 
         public async void EditRestaurantAsync(Restaurant restaurant)

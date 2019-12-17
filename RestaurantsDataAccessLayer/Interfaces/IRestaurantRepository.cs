@@ -10,8 +10,8 @@ namespace RestaurantsDataAccessLayer.Interfaces
     {
         Task<PagedList<Restaurant>> GetRestaurantsAsync(RestaurantParams restaurantParams);
         Task<Restaurant> GetRestaurantAsync(Guid restaurantId);
-        void DeleteRestaurantAsync(Restaurant getRestaurant);
-        Task AddRestaurantAsync(Restaurant restaurant);
+        void DeleteRestaurant(Restaurant getRestaurant);
+        void AddRestaurant(Restaurant restaurant);
         void EditRestaurantAsync(Restaurant restaurant);
         Task<bool> SaveAsync();
 

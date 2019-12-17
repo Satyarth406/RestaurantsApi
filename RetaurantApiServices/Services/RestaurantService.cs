@@ -28,14 +28,14 @@ namespace RestaurantsDataAccessLayer.Repositories
             return restaurant;
         }
 
-        public void DeleteRestaurantAsync(Restaurant deleteRestaurant)
+        public void DeleteRestaurant(Restaurant deleteRestaurant)
         {
-            _restaurantRepository.DeleteRestaurantAsync(deleteRestaurant);
+            _restaurantRepository.DeleteRestaurant(deleteRestaurant);
         }
 
-        public async void AddRestaurantAsync(Restaurant restaurant)
+        public  void AddRestaurant(Restaurant restaurant)
         {
-            await _restaurantRepository.AddRestaurantAsync(restaurant);
+             _restaurantRepository.AddRestaurant(restaurant);
         }
 
         public async void EditRestaurantAsync(Restaurant restaurant)

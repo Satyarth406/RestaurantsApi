@@ -41,10 +41,6 @@ namespace RestaurantsDataAccessLayer.DbContext
                 builder.Entity(entities[i].Name).Property<DateTimeOffset>("Created");
                 builder.Entity(entities[i].Name).Property<DateTimeOffset>("LastModified");
             }
-
-           
-            
-            
         }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())

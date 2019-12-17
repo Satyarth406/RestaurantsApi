@@ -30,19 +30,23 @@
             <summary>
             Get all the restaurants in the database
             </summary>
-            <returns></returns>
+            <returns>Returns all the restaurants</returns>
+            <response code="200">Returns all the restaurants</response>
         </member>
         <member name="M:RestaurantsApi.Controllers.RestaurantsController.GetRestaurantAsync(System.Guid)">
             <summary>
-            Get restaurant with the given id in the database
+            Get restaurant with the given id in the db
             </summary>
-            <returns></returns>
+            <param name="id">The id of the restaurant</param>
+            <returns>Returns a restaurant with the given id</returns>
+            <response code="200">Returns the restaurant with the given id</response>
         </member>
         <member name="M:RestaurantsApi.Controllers.RestaurantsController.AddRestaurantAsync(RestaurantsDomainLayer.Entities.Models.RestaurantCreationDto)">
             <summary>
-            Get all the restaurants in the database
+            Add the given restaurant to the db
             </summary>
-            <returns></returns>
+            <param name="restaurantCreationDto">Restaurant to add</param>
+            <returns>Returns the added restaurant</returns>
         </member>
         <member name="M:RestaurantsApi.Controllers.RestaurantsController.DeleteRestaurantAsync(System.Guid)">
             <summary>
@@ -57,6 +61,14 @@
             </summary>
             <param name="id"></param>
             <param name="restaurantCreationDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RestaurantsApi.Controllers.RestaurantsController.PartiallyUpdateRestaurantAsync(System.Guid,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{RestaurantsDomainLayer.Entities.Models.RestaurantCreationDto})">
+            <summary>
+            
+            </summary>
+            <param name="id"></param>
+            <param name="restaurantPatchDoc"></param>
             <returns></returns>
         </member>
     </members>

@@ -11,6 +11,7 @@ namespace RestaurantsDomainLayer.AutoMapper
             CreateMap<Restaurant, RestaurantDto>().ReverseMap();
             CreateMap<RestaurantCreationDto, Restaurant>().ReverseMap();
             CreateMap<Address, AddressDto>().ReverseMap();
+            CreateMap<AddressCreationDto, Address>().ReverseMap();
         }
     }
 }

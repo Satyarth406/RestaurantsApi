@@ -22,6 +22,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using Microsoft.AspNetCore.Http;
 using RetaurantApiServices.Interfaces;
 using RetaurantApiServices.Services;
 
@@ -129,7 +130,18 @@ namespace RestaurantsApi
                 setup.IncludeXmlComments(xmlFilePath);
             });
 
-            services.AddMvc();
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(item: new ProducesAttribute("application/json"));
+                options.Filters.Add(new ConsumesAttribute("application/json"));
+                options.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status404NotFound));
+                options.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status500InternalServerError));
+                
+
+
+                options.ReturnHttpNotAcceptable = true;
+
+            });
 
         }
 
