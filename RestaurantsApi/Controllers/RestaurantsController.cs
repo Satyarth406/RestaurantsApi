@@ -82,7 +82,7 @@ namespace RestaurantsApi.Controllers
         {
             var restaurant = _mapper.Map<Restaurant>(restaurantCreationDto);
             _restaurantService.AddRestaurant(restaurant);
-            if (await _restaurantService.SaveAsync())
+            if (!await _restaurantService.SaveAsync())
             {
                 throw new Exception("Creating a Restaurant failed to save. Please try again later");
             }

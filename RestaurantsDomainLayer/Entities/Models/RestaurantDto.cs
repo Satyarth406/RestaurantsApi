@@ -36,5 +36,8 @@ namespace RestaurantsDomainLayer.Entities.Models
         /// </summary>
         [Required]
         public AddressDto Location { get; set; }
+
+        public string OwnerId{ get; set; }
+
     }
 }
