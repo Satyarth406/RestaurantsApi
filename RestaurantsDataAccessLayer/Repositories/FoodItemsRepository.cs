@@ -30,9 +30,10 @@ namespace RestaurantsDataAccessLayer.Repositories
             throw new NotImplementedException();
         }
 
-        public void AddFoodItemToRestaurantAsync(Guid restaurantId, FoodItem foodItem)
+        public async void AddFoodItemToRestaurantAsync(Guid restaurantId, FoodItem foodItem)
         {
-            throw new NotImplementedException();
+            foodItem.RestaurantId = restaurantId;
+            await _restaurantsDbContext.FoodItems.AddAsync(foodItem);
         }
 
         public Task<Restaurant> EditFoodItemForRestaurantAsync(Restaurant restaurant)

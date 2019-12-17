@@ -115,6 +115,8 @@ namespace RestaurantsApi
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
 
+
+
             services.AddSwaggerGen(setup =>
             {
                 setup.SwaggerDoc("RestaurantApiOpenSpecs",

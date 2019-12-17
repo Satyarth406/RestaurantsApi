@@ -33,7 +33,7 @@ namespace RetaurantApiServices.Services
 
         public void AddFoodItemToRestaurantAsync(Guid restaurantId, FoodItem foodItem)
         {
-            throw new NotImplementedException();
+            _foodItemsRepository.AddFoodItemToRestaurantAsync(restaurantId,foodItem);
         }
 
         public Task<Restaurant> EditFoodItemForRestaurantAsync(Restaurant restaurant)
@@ -41,14 +41,14 @@ namespace RetaurantApiServices.Services
             throw new NotImplementedException();
         }
 
-        public async Task<bool> Save()
+        public async Task<bool> SaveAsync()
         {
             return await _foodItemsRepository.SaveAsync();
         }
 
-        public Task<FoodItem> GetFoodItemForRestaurantAsync(Guid restaurantId, Guid foodItemId)
+        public async Task<FoodItem> GetFoodItemForRestaurantAsync(Guid restaurantId, Guid foodItemId)
         {
-            throw new NotImplementedException();
+            return await _foodItemsRepository.GetFoodItemForRestaurantAsync(restaurantId, foodItemId);
         }
     }
 }

@@ -11,6 +11,21 @@
             <param name="restaurantId">The id of the restaurant.</param>
             <returns>This will return all the food item of given restaurant</returns>
         </member>
+        <member name="M:RestaurantsApi.Controllers.FoodItemController.GetFoodItemForRestaurantAsync(System.Guid,System.Guid)">
+            <summary>
+            Get food item available in the restaurant.
+            </summary>
+            <param name="restaurantId">The id of the restaurant</param>
+            <param name="foodItemId">The id of the foodItem</param>
+            <returns>This will return the corresponding food item of given restaurant</returns>
+        </member>
+        <member name="M:RestaurantsApi.Controllers.FoodItemController.CreateFoodItemForRestaurantAsync(System.Guid,RestaurantsDomainLayer.Entities.Models.FoodItemCreateDto)">
+            <summary>
+            Get food item available in the restaurant.
+            </summary>
+            <param name="restaurantId">The id of the restaurant</param>
+            <returns>This will return the corresponding food item of given restaurant</returns>
+        </member>
         <member name="M:RestaurantsApi.Controllers.RestaurantsController.GetAllRestaurantsAsync(RestaurantsDomainLayer.HelperModels.RestaurantParams)">
             <summary>
             Get all the restaurants in the database

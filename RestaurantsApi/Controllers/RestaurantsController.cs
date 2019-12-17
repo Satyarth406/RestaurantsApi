@@ -6,6 +6,7 @@ using RestaurantsDomainLayer.Entities;
 using RestaurantsDomainLayer.Entities.Models;
 using RestaurantsDomainLayer.HelperModels;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyModel.Resolution;
@@ -16,10 +17,6 @@ namespace RestaurantsApi.Controllers
     [Route("api/restaurants")]
     [Produces("application/json")]
     [Consumes("application/json")]
-    [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ApiController]
     public class RestaurantsController : ControllerBase
     {
@@ -32,7 +29,6 @@ namespace RestaurantsApi.Controllers
         public RestaurantsController(IRestaurantRepository restaurantRepository, IMapper mapper, IUrlHelper urlHelper, IRestaurantService restaurantService)
         {
             _restaurantService = restaurantService;
-            //_restaurantRepository = restaurantRepository;
             _mapper = mapper;
             _urlHelper = urlHelper;
         }
@@ -43,7 +39,7 @@ namespace RestaurantsApi.Controllers
         /// <returns></returns>
         [HttpGet(Name = "AllRestaurants")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<Restaurant>> GetAllRestaurantsAsync([FromQuery]RestaurantParams restaurantParams)
+        public async Task<ActionResult<List<RestaurantDto>>> GetAllRestaurantsAsync([FromQuery]RestaurantParams restaurantParams)
         {
             var allRestaurants = await _restaurantService.GetRestaurantsAsync(restaurantParams);
             
@@ -51,7 +47,9 @@ namespace RestaurantsApi.Controllers
             {
                 return NotFound("The are no restaurants in the DB");
             }
-            return Ok(allRestaurants);
+
+            var allRestaurantsDto = _mapper.Map<List<RestaurantDto>>(allRestaurants);
+            return Ok(allRestaurantsDto);
         }
 
 
@@ -61,14 +59,15 @@ namespace RestaurantsApi.Controllers
         /// <returns></returns>
         [HttpGet("{id}", Name = "GetRestaurant")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<Restaurant>> GetRestaurantAsync(Guid id)
+        public async Task<ActionResult<RestaurantDto>> GetRestaurantAsync(Guid id)
         {
             var restaurant = await _restaurantService.GetRestaurantAsync(id);
-            var restaurantDto = _mapper.Map<RestaurantDto>(restaurant);
-            if (restaurantDto == null)
+            if (restaurant == null)
             {
                 return NotFound($"The restaurant with the given {id} is not present");
             }
+            var restaurantDto = _mapper.Map<RestaurantDto>(restaurant);
+           
             return Ok(restaurantDto);
         }
 
@@ -103,7 +102,7 @@ namespace RestaurantsApi.Controllers
         /// <param name="id">The id of the restaurant to be deleted</param>
         /// <returns>This will delete the Resturant</returns>
         [HttpDelete("{id}", Name = "DeleteRestaurent")]
-        public async Task<ActionResult<Restaurant>> DeleteRestaurantAsync(Guid id)
+        public async Task<ActionResult> DeleteRestaurantAsync(Guid id)
         {
             var restaurant = await _restaurantService.GetRestaurantAsync(id);
 
@@ -118,7 +117,6 @@ namespace RestaurantsApi.Controllers
             {
                 throw new Exception("Failed to delete restaurant. Please try again later");
             }
-
             return NoContent();
         }
 
@@ -132,12 +130,6 @@ namespace RestaurantsApi.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<Restaurant>> UpdateRestaurantAsync(Guid id, RestaurantCreationDto restaurantCreationDto)
         {
-            ////Satyarth - see if this is really needed or not.
-            if (restaurantCreationDto == null)
-            {
-                return BadRequest();
-            }
-
             var restaurantSaved = await _restaurantService.GetRestaurantAsync(id);
 
             if (restaurantSaved == null)
@@ -156,8 +148,12 @@ namespace RestaurantsApi.Controllers
             return CreatedAtRoute("GetRestaurant", new { id = restaurantSaved.Id }, _mapper.Map<RestaurantDto>(restaurantSaved));
         }
 
-
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="restaurantPatchDoc"></param>
+        /// <returns></returns>
         [HttpPatch("{id}")]
         public async Task<ActionResult<Restaurant>> PartiallyUpdateRestaurantAsync(Guid id, JsonPatchDocument<RestaurantCreationDto> restaurantPatchDoc)
         {

@@ -8,9 +8,9 @@ namespace RestaurantsDomainLayer.AutoMapper
     {
         public MappingProfile()
         {
-            CreateMap<Restaurant, RestaurantDto>();
+            CreateMap<Restaurant, RestaurantDto>().ReverseMap();
             CreateMap<RestaurantCreationDto, Restaurant>().ReverseMap();
-            CreateMap<Address, AddressCreationDto>().ReverseMap();
+            CreateMap<Address, AddressDto>().ReverseMap();
         }
     }
 }
