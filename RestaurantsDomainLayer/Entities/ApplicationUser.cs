@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace RestaurantsDomainLayer.Entities
@@ -8,15 +9,21 @@ namespace RestaurantsDomainLayer.Entities
     {
         public ApplicationUser()
         {
-            //Addresses = new List<Address>();
+            Address = new Address();
         }
-        [Required]
-        public DateTime DateOfBirth { get; set; }
-        
-        [Required]
-        public string Name { get; set; }
 
-        //public List<Address> Addresses { get; set; }
+        [Required]
+        public DateTimeOffset DateOfBirth { get; set; }
+
+        [Required]
+        [MaxLength(30)]
+        public string FirstName { get; set; }
+
+        [Required]
+        [MaxLength(20)]
+        public string LastName { get; set; }
+
+        public Address Address { get; set; }
 
     }
 }

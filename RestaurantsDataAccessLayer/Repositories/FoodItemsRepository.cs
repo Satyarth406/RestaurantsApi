@@ -40,7 +40,7 @@ namespace RestaurantsDataAccessLayer.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<bool> Save()
+        public async Task<bool> SaveAsync()
         {
             return await _restaurantsDbContext.SaveChangesAsync() > 0;
         }

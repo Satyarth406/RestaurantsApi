@@ -12,21 +12,23 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using RestaurantsDomainLayer.Entities;
 
 namespace RestaurantsApi.Controllers
 {
     [Route("api/account")]
+    [Consumes("application/json")]
     [ApiController]
     public class AccountController : ControllerBase
     {
 
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _configuration;
 
         public AccountController(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
             IConfiguration configuration
             )
         {
@@ -35,27 +37,39 @@ namespace RestaurantsApi.Controllers
             _configuration = configuration;
         }
 
-        [HttpPost]
-        public async Task<object> Login([FromBody] LoginDto model)
-        {
-            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, false);
+        //[HttpPost("login")]
+        //public async Task<object> Login([FromBody] LoginDto model)
+        //{
+        //    var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, false);
 
-            if (result.Succeeded)
-            {
-                var appUser = _userManager.Users.SingleOrDefault(r => r.Email == model.Email);
-                return await GenerateJwtToken(model.Email, appUser);
-            }
+        //    if (result.Succeeded)
+        //    {
+        //        var appUser = _userManager.Users.SingleOrDefault(r => r.Email == model.Email);
+        //        return await GenerateJwtToken(model.Email, appUser);
+        //    }
 
-            throw new ApplicationException("INVALID_LOGIN_ATTEMPT");
-        }
+        //    throw new ApplicationException("INVALID_LOGIN_ATTEMPT");
+        //}
 
         [HttpPost("register")]
         public async Task<object> Register([FromBody] RegisterDto model)
         {
-            var user = new IdentityUser
+            var user = new ApplicationUser()
             {
                 UserName = model.Email,
-                Email = model.Email
+                Email = model.Email,
+                FirstName =  model.FirstName,
+                LastName = model.LastName,
+                DateOfBirth = model.DateOfBirth,
+                Address = new Address()
+                {
+                    Line1=model.Address.Line1,
+                    Line2 = model.Address.Line2,
+                    City= model.Address.City,
+                    State = model.Address.State,
+                    Country = model.Address.Country
+
+                }
             };
             var result = await _userManager.CreateAsync(user, model.Password);
 
@@ -110,6 +124,19 @@ namespace RestaurantsApi.Controllers
             [Required]
             [StringLength(100, ErrorMessage = "PASSWORD_MIN_LENGTH", MinimumLength = 6)]
             public string Password { get; set; }
+
+            [Required]
+            public string FirstName { get; set; }
+
+            [Required]
+            public string LastName { get; set; }
+
+            [Required]
+            public DateTimeOffset DateOfBirth { get; set; }
+
+            [Required]
+            public Address Address { get; set; }
+
         }
 
     }

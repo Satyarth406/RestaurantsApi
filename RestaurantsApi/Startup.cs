@@ -22,6 +22,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using RetaurantApiServices.Interfaces;
+using RetaurantApiServices.Services;
 
 namespace RestaurantsApi
 {
@@ -44,12 +46,12 @@ namespace RestaurantsApi
                     Configuration.GetConnectionString("RestaurantsApi"));
             });
 
-
             services.AddTransient<IRestaurantRepository, RestaurantsRepositoryDb>();
             services.AddTransient<IFoodItemsRepository, FoodItemsRepository>();
-
-
+            services.AddTransient<IFoodItemsService, FoodItemsService>();
+            services.AddTransient<IRestaurantService, RestaurantsService>();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+
             services.AddScoped<IUrlHelper, UrlHelper>(options =>
             {
                 var actionContext = options.GetService<IActionContextAccessor>().ActionContext;
@@ -120,9 +122,9 @@ namespace RestaurantsApi
                     {
                         Title = "Restaurant Api"
                     });
-                var xmlFileName = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml;";
-                var xmlFilePath = Path.Combine(AppContext.BaseDirectory, xmlFileName); 
-                setup.IncludeXmlComments(xmlFileName);
+                var xmlFileName = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlFilePath = Path.Combine(AppContext.BaseDirectory, xmlFileName);
+                setup.IncludeXmlComments(xmlFilePath);
             });
 
             services.AddMvc();
@@ -149,9 +151,11 @@ namespace RestaurantsApi
             {
                 setupActions.SwaggerEndpoint("/swagger/RestaurantApiOpenSpecs/swagger.json",
                     "SwaggerUiIDocs");
+                setupActions.RoutePrefix = "";
             });
-                app.UseMvc();
+            
+            app.UseMvc();
         }
-       
+
     }
 }

@@ -4,6 +4,13 @@
         <name>RestaurantsApi</name>
     </assembly>
     <members>
+        <member name="M:RestaurantsApi.Controllers.FoodItemController.GetFoodItemsForRestaurantAsync(System.Guid)">
+            <summary>
+            Get all food item of the given id of the restaurant.
+            </summary>
+            <param name="restaurantId">The id of the restaurant.</param>
+            <returns>This will return all the food item of given restaurant</returns>
+        </member>
         <member name="M:RestaurantsApi.Controllers.RestaurantsController.GetAllRestaurantsAsync(RestaurantsDomainLayer.HelperModels.RestaurantParams)">
             <summary>
             Get all the restaurants in the database

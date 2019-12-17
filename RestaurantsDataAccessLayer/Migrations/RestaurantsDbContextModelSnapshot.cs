@@ -27,6 +27,10 @@ namespace RestaurantsDataAccessLayer.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
+                    b.Property<DateTimeOffset>("Created");
+
+                    b.Property<DateTimeOffset>("LastModified");
+
                     b.Property<string>("Name")
                         .HasMaxLength(256);
 
@@ -53,6 +57,10 @@ namespace RestaurantsDataAccessLayer.Migrations
 
                     b.Property<string>("ClaimValue");
 
+                    b.Property<DateTimeOffset>("Created");
+
+                    b.Property<DateTimeOffset>("LastModified");
+
                     b.Property<string>("RoleId")
                         .IsRequired();
 
@@ -73,6 +81,10 @@ namespace RestaurantsDataAccessLayer.Migrations
 
                     b.Property<string>("ClaimValue");
 
+                    b.Property<DateTimeOffset>("Created");
+
+                    b.Property<DateTimeOffset>("LastModified");
+
                     b.Property<string>("UserId")
                         .IsRequired();
 
@@ -88,6 +100,10 @@ namespace RestaurantsDataAccessLayer.Migrations
                     b.Property<string>("LoginProvider");
 
                     b.Property<string>("ProviderKey");
+
+                    b.Property<DateTimeOffset>("Created");
+
+                    b.Property<DateTimeOffset>("LastModified");
 
                     b.Property<string>("ProviderDisplayName");
 
@@ -107,6 +123,10 @@ namespace RestaurantsDataAccessLayer.Migrations
 
                     b.Property<string>("RoleId");
 
+                    b.Property<DateTimeOffset>("Created");
+
+                    b.Property<DateTimeOffset>("LastModified");
+
                     b.HasKey("UserId", "RoleId");
 
                     b.HasIndex("RoleId");
@@ -121,6 +141,10 @@ namespace RestaurantsDataAccessLayer.Migrations
                     b.Property<string>("LoginProvider");
 
                     b.Property<string>("Name");
+
+                    b.Property<DateTimeOffset>("Created");
+
+                    b.Property<DateTimeOffset>("LastModified");
 
                     b.Property<string>("Value");
 
@@ -142,7 +166,11 @@ namespace RestaurantsDataAccessLayer.Migrations
                         .IsRequired()
                         .HasMaxLength(100);
 
+                    b.Property<DateTimeOffset>("Created");
+
                     b.Property<string>("Landmark");
+
+                    b.Property<DateTimeOffset>("LastModified");
 
                     b.Property<string>("Line1")
                         .IsRequired()
@@ -166,22 +194,33 @@ namespace RestaurantsDataAccessLayer.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
+                    b.Property<Guid?>("AddressId");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
-                    b.Property<DateTime>("DateOfBirth");
+                    b.Property<DateTimeOffset>("Created");
+
+                    b.Property<DateTimeOffset>("DateOfBirth");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed");
 
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(30);
+
+                    b.Property<DateTimeOffset>("LastModified");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(20);
+
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
-
-                    b.Property<string>("Name")
-                        .IsRequired();
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256);
@@ -204,6 +243,8 @@ namespace RestaurantsDataAccessLayer.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AddressId");
+
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
 
@@ -221,6 +262,10 @@ namespace RestaurantsDataAccessLayer.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("Cost");
+
+                    b.Property<DateTimeOffset>("Created");
+
+                    b.Property<DateTimeOffset>("LastModified");
 
                     b.Property<string>("Name")
                         .HasMaxLength(100);
@@ -243,7 +288,11 @@ namespace RestaurantsDataAccessLayer.Migrations
 
                     b.Property<double>("AverageCost");
 
-                    b.Property<Guid>("LocationId");
+                    b.Property<DateTimeOffset>("Created");
+
+                    b.Property<DateTimeOffset>("LastModified");
+
+                    b.Property<Guid?>("LocationId");
 
                     b.Property<string>("Name")
                         .HasMaxLength(100);
@@ -309,6 +358,13 @@ namespace RestaurantsDataAccessLayer.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("RestaurantsDomainLayer.Entities.ApplicationUser", b =>
+                {
+                    b.HasOne("RestaurantsDomainLayer.Entities.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId");
+                });
+
             modelBuilder.Entity("RestaurantsDomainLayer.Entities.FoodItem", b =>
                 {
                     b.HasOne("RestaurantsDomainLayer.Entities.Restaurant", "Restaurant")
@@ -321,8 +377,7 @@ namespace RestaurantsDataAccessLayer.Migrations
                 {
                     b.HasOne("RestaurantsDomainLayer.Entities.Address", "Location")
                         .WithMany()
-                        .HasForeignKey("LocationId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("LocationId");
 
                     b.HasOne("RestaurantsDomainLayer.Entities.ApplicationUser", "Owner")
                         .WithMany()

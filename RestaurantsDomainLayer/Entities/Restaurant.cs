@@ -39,7 +39,6 @@ namespace RestaurantsDomainLayer.Entities
 
         public List<FoodItem> FoodItems { get; set; }
         
-        [Required]
         public Address Location { get; set; }
 
     }

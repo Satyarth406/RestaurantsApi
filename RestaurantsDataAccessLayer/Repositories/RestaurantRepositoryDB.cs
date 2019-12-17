@@ -36,7 +36,7 @@ namespace RestaurantsDataAccessLayer.Repositories
             _restaurantsDbContext.Restaurants.Remove(getRestaurant);
         }
 
-        public async void AddRestaurantAsync(Restaurant restaurant)
+        public async Task AddRestaurantAsync(Restaurant restaurant)
         {
             await _restaurantsDbContext.Restaurants.AddAsync(restaurant);
         }
@@ -46,7 +46,7 @@ namespace RestaurantsDataAccessLayer.Repositories
            
         }
 
-        public async Task<bool> Save()
+        public async Task<bool> SaveAsync()
         {
             return await _restaurantsDbContext.SaveChangesAsync() > 0;
         }
