@@ -45,9 +45,10 @@ namespace RestaurantsDataAccessLayer.Repositories
             return await _restaurantsDbContext.SaveChangesAsync() > 0;
         }
 
-        public Task<FoodItem> GetFoodItemForRestaurantAsync(Guid restaurantId, Guid foodItemId)
+        public async Task<FoodItem> GetFoodItemForRestaurantAsync(Guid restaurantId, Guid foodItemId)
         {
-            throw new NotImplementedException();
+            var foodItem = await _restaurantsDbContext.FoodItems.Where(x => x.RestaurantId == restaurantId && x.Id == foodItemId).FirstOrDefaultAsync();
+            return foodItem;
         }
     }
 }
