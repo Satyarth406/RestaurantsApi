@@ -1,24 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using RestaurantsDataAccessLayer.Interfaces;
 using RestaurantsDomainLayer.Entities;
 using RestaurantsDomainLayer.Entities.Models;
 using RetaurantApiServices.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace RestaurantsApi.Controllers
 {
     [Route("api/restaurants/{restaurantId}/foodItems")]
-    [Produces("application/json")]
-    [Consumes("application/json")]
-    [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ApiController]
     public class FoodItemController : ControllerBase
     {
@@ -54,20 +46,21 @@ namespace RestaurantsApi.Controllers
             return Ok(foodItemsDto);
         }
 
+
         /// <summary>
         /// Get food item available in the restaurant.
         /// </summary>
         /// <param name="restaurantId">The id of the restaurant</param>
         /// <param name="foodItemId">The id of the foodItem</param>
         /// <returns>This will return the corresponding food item of given restaurant</returns>
-        [HttpGet("{foodItemId}", Name = "FoodItemById")]
+        [HttpGet("{foodItemId}", Name = "GetFoodItem")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<FoodItemDto>> GetFoodItemForRestaurantAsync(Guid restaurantId, Guid foodItemId)
         {
             var restaurant = await _restaurantService.GetRestaurantAsync(restaurantId);
             if (restaurant == null)
             {
-                return BadRequest("The given restaurant doesnt exists");
+                return BadRequest("The given restaurant doesn't exists");
             }
             var foodItem = await _foodItemsService.GetFoodItemForRestaurantAsync(restaurantId, foodItemId);
             if (foodItem == null)
@@ -86,7 +79,7 @@ namespace RestaurantsApi.Controllers
         /// <returns>This will return the corresponding food item of given restaurant</returns>
         [HttpPost(Name = "CreateFoodItem")]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<ActionResult<FoodItemDto>> CreateFoodItemForRestaurantAsync(Guid restaurantId, FoodItemCreateDto foodItemCreateDto)
+        public async Task<ActionResult<FoodItemDto>> CreateFoodItemForRestaurantAsync(Guid restaurantId, FoodItemCreationDto foodItemCreateDto)
         {
             var restaurant = await _restaurantService.GetRestaurantAsync(restaurantId);
             if (restaurant == null)
@@ -100,8 +93,66 @@ namespace RestaurantsApi.Controllers
                 throw new Exception("Something went wrong");
             }
             var foodItemDto = _mapper.Map<FoodItemDto>(foodItemCreate);
-            return CreatedAtAction("FoodItemById", new { restaurantId = restaurantId, foodItemId = foodItemCreate.Id }, foodItemDto);
-
+            return CreatedAtRoute("GetFoodItem", new { restaurantId = restaurantId, foodItemId = foodItemCreate.Id }, foodItemDto);
         }
+
+
+        /// <summary>
+        /// Get food item available in the restaurant.
+        /// </summary>
+        /// <param name="restaurantId">The id of the restaurant</param>
+        /// <returns>This will return the corresponding food item of given restaurant</returns>
+        [HttpDelete("{foodItemId}", Name = "CreateFoodItem")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<ActionResult> DeleteFoodItemForRestaurantAsync(Guid restaurantId, Guid foodItemId)
+        {
+            var restaurant = await _restaurantService.GetRestaurantAsync(restaurantId);
+            if (restaurant == null)
+            {
+                return NotFound("The given restaurant doesn't exist");
+            }
+            var foodItem = await _foodItemsService.GetFoodItemForRestaurantAsync(restaurantId, foodItemId);
+            if (foodItem == null)
+            {
+                return NotFound("The given food item doesn't exist");
+
+            }
+            _foodItemsService.DeleteFoodItemForRestaurantAsync(foodItem);
+            if (!await _foodItemsService.SaveAsync())
+            {
+                throw new Exception("Something went wrong");
+            }
+            return NoContent();
+            
+        }
+
+
+        /// <summary>
+        /// Update food item of the restaurant
+        /// </summary>
+        /// <param name="restaurantId">The id of the restaurant</param>
+        /// <param name="foodItemId">The id of the food Item</param>
+        /// <param name="foodItemCreationDto">The food item to be updated</param>
+        /// <returns></returns>
+        [HttpPut("{foodItemId}",Name = "UpdateFoodItem")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<ActionResult> UpdateFoodItemForRestaurantAsync(Guid restaurantId,Guid foodItemId, FoodItemCreationDto foodItemCreationDto)
+        {
+            var restaurant = await _restaurantService.GetRestaurantAsync(restaurantId);
+            if (restaurant == null)
+            {
+                return BadRequest("The given restaurant doesn't exists");
+            }
+
+            var foodItem = await _foodItemsService.GetFoodItemForRestaurantAsync(restaurantId, foodItemId);
+            _mapper.Map(foodItemCreationDto, foodItem);
+            await _foodItemsService.EditFoodItemForRestaurantAsync(foodItem);
+            if (!await _foodItemsService.SaveAsync())
+            {
+                throw new Exception("Something went wrong");
+            }
+            return NoContent();
+        }
+
     }
 }

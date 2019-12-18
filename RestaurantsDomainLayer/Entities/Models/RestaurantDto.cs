@@ -9,9 +9,13 @@ namespace RestaurantsDomainLayer.Entities.Models
     public class RestaurantDto
     {
         /// <summary>
+        /// Id of the restaurant
+        /// </summary>
+        public Guid Id { get; set; }
+        /// <summary>
         /// Name of the restaurant
         /// </summary>
-        [MaxLength(100)]
+        [MaxLength(50)]
         public string Name { get; set; }
 
         /// <summary>

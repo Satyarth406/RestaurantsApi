@@ -25,9 +25,9 @@ namespace RestaurantsDataAccessLayer.Repositories
         }
 
 
-        public void DeleteFoodItemForRestaurantAsync(Guid restaurantId)
+        public void DeleteFoodItemForRestaurantAsync(FoodItem foodItem)
         {
-            throw new NotImplementedException();
+            _restaurantsDbContext.FoodItems.Remove(foodItem);
         }
 
         public async void AddFoodItemToRestaurantAsync(Guid restaurantId, FoodItem foodItem)

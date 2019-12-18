@@ -11,7 +11,7 @@ namespace RestaurantsDomainLayer.Entities.Models
         /// <summary>
         /// Name of the Restaurant
         /// </summary>
-        [MaxLength(100)]
+        [MaxLength(50)]
         public string Name { get; set; }
 
         public FoodType Type { get; set; }

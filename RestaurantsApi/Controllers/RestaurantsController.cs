@@ -80,6 +80,7 @@ namespace RestaurantsApi.Controllers
         [HttpPost]
         public async Task<ActionResult<RestaurantDto>> AddRestaurantAsync(RestaurantCreationDto restaurantCreationDto)
         {
+            
             var restaurant = _mapper.Map<Restaurant>(restaurantCreationDto);
             _restaurantService.AddRestaurant(restaurant);
             if (!await _restaurantService.SaveAsync())
@@ -108,7 +109,7 @@ namespace RestaurantsApi.Controllers
 
             _restaurantService.DeleteRestaurant(restaurant);
 
-            if (await _restaurantService.SaveAsync())
+            if (!await _restaurantService.SaveAsync())
             {
                 throw new Exception("Failed to delete restaurant. Please try again later");
             }
@@ -135,12 +136,12 @@ namespace RestaurantsApi.Controllers
             _mapper.Map(restaurantCreationDto, restaurantSaved);
             _restaurantService.EditRestaurantAsync(restaurantSaved);
 
-            if (await _restaurantService.SaveAsync())
+            if (!await _restaurantService.SaveAsync())
             {
                 throw new Exception("Failed to update Restaurant. Please try again later");
             }
 
-            return CreatedAtRoute("GetRestaurant", new { id = restaurantSaved.Id }, _mapper.Map<RestaurantDto>(restaurantSaved));
+            return NoContent();
         }
 
 
@@ -167,7 +168,7 @@ namespace RestaurantsApi.Controllers
             _mapper.Map(restaurantCreationDto, restaurantInDb);
             _restaurantService.EditRestaurantAsync(restaurantInDb);
 
-            if (await _restaurantService.SaveAsync())
+            if (!await _restaurantService.SaveAsync())
             {
                 throw new Exception("Failed to update Restaurant. Please try again later");
             }

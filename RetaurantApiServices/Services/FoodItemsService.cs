@@ -26,9 +26,9 @@ namespace RetaurantApiServices.Services
         }
 
 
-        public void DeleteFoodItemForRestaurantAsync(Guid restaurantId)
+        public void DeleteFoodItemForRestaurantAsync(FoodItem foodItem)
         {
-            throw new NotImplementedException();
+            _foodItemsRepository.DeleteFoodItemForRestaurantAsync(foodItem);
         }
 
         public void AddFoodItemToRestaurantAsync(Guid restaurantId, FoodItem foodItem)

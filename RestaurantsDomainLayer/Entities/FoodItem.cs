@@ -10,7 +10,7 @@ namespace RestaurantsDomainLayer.Entities
         [Key]
         public Guid Id{ get; set; }
 
-        [MaxLength(100)]
+        [MaxLength(50)]
         public string Name { get; set; }
 
         [Range(1, 5)]

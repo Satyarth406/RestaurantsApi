@@ -19,7 +19,14 @@
             <param name="foodItemId">The id of the foodItem</param>
             <returns>This will return the corresponding food item of given restaurant</returns>
         </member>
-        <member name="M:RestaurantsApi.Controllers.FoodItemController.CreateFoodItemForRestaurantAsync(System.Guid,RestaurantsDomainLayer.Entities.Models.FoodItemCreateDto)">
+        <member name="M:RestaurantsApi.Controllers.FoodItemController.CreateFoodItemForRestaurantAsync(System.Guid,RestaurantsDomainLayer.Entities.Models.FoodItemCreationDto)">
+            <summary>
+            Get food item available in the restaurant.
+            </summary>
+            <param name="restaurantId">The id of the restaurant</param>
+            <returns>This will return the corresponding food item of given restaurant</returns>
+        </member>
+        <member name="M:RestaurantsApi.Controllers.FoodItemController.DeleteFoodItemForRestaurantAsync(System.Guid,System.Guid)">
             <summary>
             Get food item available in the restaurant.
             </summary>
