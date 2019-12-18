@@ -31,9 +31,9 @@ namespace RetaurantApiServices.Services
             _foodItemsRepository.DeleteFoodItemForRestaurantAsync(foodItem);
         }
 
-        public void AddFoodItemToRestaurantAsync(Guid restaurantId, FoodItem foodItem)
+        public void AddFoodItemToRestaurant(Guid restaurantId, FoodItem foodItem)
         {
-            _foodItemsRepository.AddFoodItemToRestaurantAsync(restaurantId,foodItem);
+            _foodItemsRepository.AddFoodItemToRestaurant(restaurantId,foodItem);
         }
 
         public Task<Restaurant> EditFoodItemForRestaurantAsync(Restaurant restaurant)

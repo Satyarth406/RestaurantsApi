@@ -87,7 +87,7 @@ namespace RestaurantsApi.Controllers
                 return BadRequest("The given restaurant doesn't exists");
             }
             var foodItemCreate = _mapper.Map<FoodItem>(foodItemCreateDto);
-            _foodItemsService.AddFoodItemToRestaurantAsync(restaurantId, foodItemCreate);
+            _foodItemsService.AddFoodItemToRestaurant(restaurantId, foodItemCreate);
             if (!await _foodItemsService.SaveAsync())
             {
                 throw new Exception("Something went wrong");
