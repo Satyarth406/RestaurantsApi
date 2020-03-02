@@ -8,6 +8,6 @@ namespace RetaurantApiServices.Interfaces
 {
     public interface ICartService
     {
-
+        
     }
 }

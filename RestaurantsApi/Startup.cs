@@ -136,7 +136,6 @@ namespace RestaurantsApi
                 options.Filters.Add(new ConsumesAttribute("application/json"));
                 options.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status404NotFound));
                 options.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status500InternalServerError));
-                
 
 
                 options.ReturnHttpNotAcceptable = true;
