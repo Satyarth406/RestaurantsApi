@@ -87,7 +87,7 @@ namespace RestaurantsApi.Controllers
                 return BadRequest("The given restaurant doesn't exists");
             }
             var foodItemCreate = _mapper.Map<FoodItem>(foodItemCreateDto);
-            _foodItemsService.AddFoodItemToRestaurant(restaurantId, foodItemCreate);
+            _foodItemsService.AddFoodItemToRestaurantAsync(restaurantId, foodItemCreate);
             if (!await _foodItemsService.SaveAsync())
             {
                 throw new Exception("Something went wrong");
@@ -102,7 +102,7 @@ namespace RestaurantsApi.Controllers
         /// </summary>
         /// <param name="restaurantId">The id of the restaurant</param>
         /// <returns>This will return the corresponding food item of given restaurant</returns>
-        [HttpDelete("{foodItemId}", Name = "CreateFoodItem")]
+        [HttpDelete("{foodItemId}", Name = "DeleteFoodItem")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult> DeleteFoodItemForRestaurantAsync(Guid restaurantId, Guid foodItemId)
         {

@@ -30,7 +30,7 @@ namespace RestaurantsDataAccessLayer.Repositories
             _restaurantsDbContext.FoodItems.Remove(foodItem);
         }
 
-        public void AddFoodItemToRestaurant(Guid restaurantId, FoodItem foodItem)
+        public void AddFoodItemToRestaurantAsync(Guid restaurantId, FoodItem foodItem)
         {
             foodItem.RestaurantId = restaurantId;
             _restaurantsDbContext.FoodItems.Add(foodItem);
@@ -51,5 +51,6 @@ namespace RestaurantsDataAccessLayer.Repositories
             var foodItem = await _restaurantsDbContext.FoodItems.Where(x => x.RestaurantId == restaurantId && x.Id == foodItemId).FirstOrDefaultAsync();
             return foodItem;
         }
+
     }
 }

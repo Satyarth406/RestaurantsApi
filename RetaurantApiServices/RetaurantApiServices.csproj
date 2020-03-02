@@ -111,8 +111,12 @@
   <ItemGroup>
     <Compile Include="Interfaces\ICartService.cs" />
     <Compile Include="Interfaces\IFoodItemsService.cs" />
+    <Compile Include="Interfaces\IPropertyMapping.cs" />
+    <Compile Include="Interfaces\IPropertyMappingService.cs" />
     <Compile Include="Interfaces\IRestaurantService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\PropertyMapping.cs" />
+    <Compile Include="Services\PropertyMappingService.cs" />
     <Compile Include="Services\FoodItemsService.cs" />
     <Compile Include="Services\RestaurantService.cs" />
   </ItemGroup>

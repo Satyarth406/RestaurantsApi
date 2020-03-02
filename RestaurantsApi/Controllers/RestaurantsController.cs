@@ -80,7 +80,6 @@ namespace RestaurantsApi.Controllers
         [HttpPost]
         public async Task<ActionResult<RestaurantDto>> AddRestaurantAsync(RestaurantCreationDto restaurantCreationDto)
         {
-            
             var restaurant = _mapper.Map<Restaurant>(restaurantCreationDto);
             _restaurantService.AddRestaurant(restaurant);
             if (!await _restaurantService.SaveAsync())

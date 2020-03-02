@@ -31,16 +31,12 @@ namespace RetaurantApiServices.Services
             _foodItemsRepository.DeleteFoodItemForRestaurantAsync(foodItem);
         }
 
-        public void AddFoodItemToRestaurant(Guid restaurantId, FoodItem foodItem)
+        public void AddFoodItemToRestaurantAsync(Guid restaurantId, FoodItem foodItem)
         {
-            _foodItemsRepository.AddFoodItemToRestaurant(restaurantId,foodItem);
+            _foodItemsRepository.AddFoodItemToRestaurantAsync(restaurantId,foodItem);
         }
 
-        public Task<Restaurant> EditFoodItemForRestaurantAsync(Restaurant restaurant)
-        {
-            throw new NotImplementedException();
-        }
-
+       
         public async Task<bool> SaveAsync()
         {
             return await _foodItemsRepository.SaveAsync();
@@ -49,6 +45,11 @@ namespace RetaurantApiServices.Services
         public async Task<FoodItem> GetFoodItemForRestaurantAsync(Guid restaurantId, Guid foodItemId)
         {
             return await _foodItemsRepository.GetFoodItemForRestaurantAsync(restaurantId, foodItemId);
+        }
+
+        public Task<Restaurant> EditFoodItemForRestaurantAsync(FoodItem foodItem)
+        {
+            throw new NotImplementedException();
         }
     }
 }

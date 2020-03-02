@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -17,14 +18,13 @@ using RestaurantsDataAccessLayer.Interfaces;
 using RestaurantsDataAccessLayer.Repositories;
 using RestaurantsDomainLayer.AutoMapper;
 using RestaurantsDomainLayer.Entities;
+using RetaurantApiServices.Interfaces;
+using RetaurantApiServices.Services;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Reflection;
 using System.Text;
-using Microsoft.AspNetCore.Http;
-using RetaurantApiServices.Interfaces;
-using RetaurantApiServices.Services;
 
 namespace RestaurantsApi
 {
@@ -134,9 +134,10 @@ namespace RestaurantsApi
             {
                 options.Filters.Add(item: new ProducesAttribute("application/json"));
                 options.Filters.Add(new ConsumesAttribute("application/json"));
+                options.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status401Unauthorized));
                 options.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status404NotFound));
+                options.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status406NotAcceptable));
                 options.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status500InternalServerError));
-
 
                 options.ReturnHttpNotAcceptable = true;
 

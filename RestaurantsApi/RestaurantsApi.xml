@@ -33,6 +33,15 @@
             <param name="restaurantId">The id of the restaurant</param>
             <returns>This will return the corresponding food item of given restaurant</returns>
         </member>
+        <member name="M:RestaurantsApi.Controllers.FoodItemController.UpdateFoodItemForRestaurantAsync(System.Guid,System.Guid,RestaurantsDomainLayer.Entities.Models.FoodItemCreationDto)">
+            <summary>
+            Update food item of the restaurant
+            </summary>
+            <param name="restaurantId">The id of the restaurant</param>
+            <param name="foodItemId">The id of the food Item</param>
+            <param name="foodItemCreationDto">The food item to be updated</param>
+            <returns></returns>
+        </member>
         <member name="M:RestaurantsApi.Controllers.RestaurantsController.GetAllRestaurantsAsync(RestaurantsDomainLayer.HelperModels.RestaurantParams)">
             <summary>
             Get all the restaurants in the database
